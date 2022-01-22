@@ -31,7 +31,7 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-            <Header />
+            {/* <Head   er /> */}
                 <Switch>
                 <Route exact path="/" component={MyGuruHome} />
                     <Route exact path="/vocational-career" component={VocationalImages} />
@@ -45,7 +45,7 @@ function App() {
                     <Route exact path="/aboutus" component={AboutUs} />
                     <Route exact path="/youtube" component={YouTube} />
                     
-
+                    
                     {/* /6 to 12 Test/ */}
                     <Route path="/paymentsummery"> <Prodected Cmp={PaymentSummary} /> </Route>
                     <Route exact path="/paymentconfirm"> <Prodected Cmp={PaymentConfirm} /> </Route>

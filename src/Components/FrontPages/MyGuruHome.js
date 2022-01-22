@@ -7,11 +7,14 @@ import { Link, useHistory } from 'react-router-dom';
 import Header from './Header';
 import { getTest } from '../../actions/Test/TestAction';
 import { useSelector, useDispatch } from "react-redux";
+import ClassSection from './ClassSection'
 
 const MyGuruHome = () => {
     const dispatch = useDispatch();
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [model, setModel] = useState(false)
+    const [classId, setClassId] = useState()
     const history = useHistory()
     let user = JSON.parse(localStorage.getItem('user-details'));
 
@@ -28,6 +31,7 @@ const MyGuruHome = () => {
         localStorage.removeItem("resultTitle")
         localStorage.removeItem("discription")
         localStorage.removeItem("continue")
+        localStorage.removeItem("classSection")
     }
     const getData = () => {
         fetch(`${process.env.REACT_APP_API_URL}/api/class/`, {
@@ -46,17 +50,19 @@ const MyGuruHome = () => {
 
     const classFunc = (id) => {
         removeLocal()
-        let item = { id };
         localStorage.setItem("id",id)
-        // dispatch(getTest(item));
-        history.push('./paymentsummery')
+        setClassId(id)
+        setModel(true)
+        // history.push('./paymentsummery')
     }
 
     return (
 
         <>
             {/*  */}
-
+        { model ?
+            <ClassSection id={classId}/>:
+            ""}
             <Header />
             <div className="ulockd-home-slider mt-4">
                 {/* <!--<div className="container-fluid">--> */}

@@ -10,6 +10,7 @@ const Analysis = ({ data }) => {
 
   const [count, setCount] = useState({})
   let typeOfTest = localStorage.getItem('typeOfTest')
+  let classSection = localStorage.getItem('classSection')
 
   let rows = []
   let rows2 = []
@@ -22,7 +23,7 @@ const Analysis = ({ data }) => {
   useEffect(() => {
     if (test && test.length === 0) {
       let id = localStorage.getItem("id")
-      let item = { id }
+      let item = { id, classSection }
       dispatch(getTest(item));
     }
 

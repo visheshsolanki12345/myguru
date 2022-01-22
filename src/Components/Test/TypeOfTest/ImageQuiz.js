@@ -138,13 +138,14 @@ const ImageQuiz1 = ({ test }) => {
 
     let Class = localStorage.getItem('Class')
     let typeOfTest = localStorage.getItem('typeOfTest')
+    let classSection = localStorage.getItem('classSection')
 
 
 
     useEffect(() => {
         if (test && test.length === 0) {
             let id = localStorage.getItem("id")
-            let item = { id }
+            let item = { id, classSection }
             dispatch(getTest(item));
         }
         checkPayment()
@@ -176,7 +177,7 @@ const ImageQuiz1 = ({ test }) => {
 
 
     const sendDataResult = async (typeOfTest, Class, section, question, marks) => {
-        let item = { typeOfTest, Class, section, question, marks };
+        let item = { typeOfTest, Class, section, question, marks, classSection };
         await fetch(`${process.env.REACT_APP_API_URL}/api/save-result/`, {
             method: "POST",
             headers: {
@@ -193,7 +194,7 @@ const ImageQuiz1 = ({ test }) => {
 
 
     const sendDataBackup = async (Class, section, question, typeOfTest, obj, lastTime) => {
-        let item = { Class, section, question, typeOfTest, obj, lastTime };
+        let item = { Class, section, question, typeOfTest, obj, lastTime, classSection };
         await fetch(`${process.env.REACT_APP_API_URL}/api/test-backup/`, {
             method: "POST",
             headers: {
@@ -211,7 +212,7 @@ const ImageQuiz1 = ({ test }) => {
 
 
     const getBackup = async () => {
-        let item = { typeOfTest, Class }
+        let item = { typeOfTest, Class, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/get-backup/`, {
             method: "POST",
             headers: {
@@ -228,7 +229,7 @@ const ImageQuiz1 = ({ test }) => {
     };
 
     const getBackupData = async () => {
-        let item = { typeOfTest, Class }
+        let item = { typeOfTest, Class, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/get-backup/`, {
             method: "POST",
             headers: {
@@ -283,7 +284,7 @@ const ImageQuiz1 = ({ test }) => {
 
 
     const checkPayment = async () => {
-        let item = { typeOfTest, Class };
+        let item = { typeOfTest, Class, classSection };
         await fetch(`${process.env.REACT_APP_API_URL}/api/payment-router/`, {
             method: "POST",
             headers: {

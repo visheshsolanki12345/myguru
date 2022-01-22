@@ -55,20 +55,21 @@ const ResultPage6To9 = () => {
     let typeOfTest = localStorage.getItem('typeOfTest')
     let resultTitle = localStorage.getItem('resultTitle')
     let discription = localStorage.getItem('discription')
+    let classSection = localStorage.getItem('classSection')
 
     const { test } = useSelector((state) => state.test)
 
     useEffect(() => {
         if (test && test.length === 0) {
             let id = localStorage.getItem("id")
-            let item = { id }
+            let item = { id, classSection }
             dispatch(getTest(item));
         }
         getResult()
     }, [dispatch])
 
     const getResult = () => {
-        let item = { Class, typeOfTest }
+        let item = { Class, typeOfTest, classSection }
         fetch(`${process.env.REACT_APP_API_URL}/api/result/`, {
             method: "POST",
             headers: {
@@ -97,7 +98,7 @@ const ResultPage6To9 = () => {
 
 
     const deleteReportData = async () => {
-        let item = { Class, typeOfTest }
+        let item = { Class, typeOfTest, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/delete-result/`, {
             method: "POST",
             headers: {
@@ -114,7 +115,7 @@ const ResultPage6To9 = () => {
 
 
     const deleteBackup = async () => {
-        let item = { Class, typeOfTest }
+        let item = { Class, typeOfTest, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/delete-backup/`, {
             method: "POST",
             headers: {
@@ -130,7 +131,7 @@ const ResultPage6To9 = () => {
     };
 
     const paymentDecriment = async () => {
-        let item = { Class, typeOfTest }
+        let item = { Class, typeOfTest, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/payment-decriment/`, {
             method: "POST",
             headers: {

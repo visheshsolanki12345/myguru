@@ -23,10 +23,11 @@ const PaymentSummary = () => {
     let user = JSON.parse(localStorage.getItem('user-details'));
     let cont = localStorage.getItem('continue')
     let id = localStorage.getItem("id")
+    let classSection = localStorage.getItem("classSection")
     const history = useHistory()
 
     useEffect(() => {
-        let item = { id }
+        let item = { id, classSection }
         getData(item)
     }, [])
 
@@ -76,7 +77,7 @@ const PaymentSummary = () => {
 
     const payTemPayment = async () => {
         setLoading(true)
-        let item = { id }
+        let item = { id, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/test-payment-done/`, {
             method: "POST",
             headers: {
@@ -107,7 +108,7 @@ const PaymentSummary = () => {
 
     const getData = async () => {
         setLoading(true)
-        let item = { id }
+        let item = { id, classSection }
         await fetch(`${process.env.REACT_APP_API_URL}/api/test-info/`, {
             method: "POST",
             headers: {
@@ -117,6 +118,9 @@ const PaymentSummary = () => {
             },
             body: JSON.stringify(item),
         }).then((result) => {
+            if (result.status === 401){
+                return history.push('/login')
+            }
             result.json().then((resp) => {
                 setTest(resp)
                 resp.discreption.forEach((item, index) => {
@@ -170,7 +174,7 @@ const PaymentSummary = () => {
 
 
     const continueTest = async () => {
-        let item = { id }
+        let item = { id, classSection }
         dispatch(getTest(item));
         history.push('/paymentassessment')
     }

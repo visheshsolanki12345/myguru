@@ -144,12 +144,13 @@ const Testpage = () => {
 
   let Class = localStorage.getItem('Class')
   let typeOfTest = localStorage.getItem('typeOfTest')
+  let classSection = localStorage.getItem('classSection')
 
 
   useEffect(() => {
     if (test && test.length === 0) {
       let id = localStorage.getItem("id")
-      let item = { id }
+      let item = { id, classSection }
       dispatch(getTest(item));
     }
     checkPayment()
@@ -187,7 +188,7 @@ const Testpage = () => {
   }
 
   const sendDataResult = async (typeOfTest, Class, section, question, marks, carrer) => {
-    let item = { typeOfTest, Class, section, question, marks, carrer };
+    let item = { typeOfTest, Class, section, question, marks, carrer, classSection };
     // console.log(item)
     await fetch(`${process.env.REACT_APP_API_URL}/api/save-result/`, {
       method: "POST",
@@ -205,7 +206,7 @@ const Testpage = () => {
 
 
   const sendDataBackup = async (Class, section, question, typeOfTest, obj, lastTime) => {
-    let item = { Class, section, question, typeOfTest, obj, lastTime };
+    let item = { Class, section, question, typeOfTest, obj, lastTime, classSection };
     await fetch(`${process.env.REACT_APP_API_URL}/api/test-backup/`, {
       method: "POST",
       headers: {
@@ -222,7 +223,7 @@ const Testpage = () => {
   };
 
   const getBackup = async () => {
-    let item = { typeOfTest, Class }
+    let item = { typeOfTest, Class, classSection }
     await fetch(`${process.env.REACT_APP_API_URL}/api/get-backup/`, {
       method: "POST",
       headers: {
@@ -239,7 +240,7 @@ const Testpage = () => {
   };
 
   const getBackupData = async () => {
-    let item = { typeOfTest, Class }
+    let item = { typeOfTest, Class, classSection }
     await fetch(`${process.env.REACT_APP_API_URL}/api/get-backup/`, {
       method: "POST",
       headers: {
@@ -296,7 +297,7 @@ const Testpage = () => {
   }
 
   const checkPayment = async () => {
-    let item = { typeOfTest, Class };
+    let item = { typeOfTest, Class, classSection };
     await fetch(`${process.env.REACT_APP_API_URL}/api/payment-router/`, {
       method: "POST",
       headers: {
