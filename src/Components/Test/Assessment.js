@@ -4,6 +4,9 @@ import {Link } from 'react-router-dom'
 import { getTest } from '../../actions/Test/TestAction'
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../Loader/Loader";
+import { Button } from "@mui/material";
+import './triangle.css'
+
 
 const Assessment = () => {
 
@@ -46,19 +49,20 @@ const Assessment = () => {
                                     <h1 className="text-start mt-3 ml-4 fw-bold gray">General Instructions</h1>
                                     <div className=" ">
                                         <h1 className="text-center mt-3 gray">Please read the instructions carefully</h1>
-                                        <p className="text-start mt-3 fw-bold ml-4">Instructions for students</p>
-                                        <div classNameName="row">
-                                            <p className="ml-3 fs-6 col-lg-8">1. Required Version of safe browser Dignissimos in sequi omnis inventore provident fugit. Fuga unde libero maxime quas doloribus est itaque quos similique, quo, voluptates quaerat, nisi laborum.</p>
-                                            <p className="ml-3 fs-6 col-lg-8">1. Required Version of safe browser Dignissimos in sequi omnis inventore provident fugit. Fuga unde libero maxime quas doloribus est itaque quos similique, quo, voluptates quaerat, nisi laborum.</p>
-                                            <p className="ml-3 fs-6 col-lg-8">1. Required Version of safe browser Dignissimos in sequi omnis inventore provident fugit. Fuga unde libero maxime quas doloribus est itaque quos similique, quo, voluptates quaerat, nisi laborum.</p>
-                                            <p className="ml-3 fs-6 col-lg-8">1. Required Version of safe browser Dignissimos in sequi omnis inventore provident fugit. Fuga unde libero maxime quas doloribus est itaque quos similique, quo, voluptates quaerat, nisi laborum.</p>
-                                            <p className="ml-3 fs-6 col-lg-8">1. Required Version of safe browser Dignissimos in sequi omnis inventore provident fugit. Fuga unde libero maxime quas doloribus est itaque quos similique, quo, voluptates quaerat, nisi laborum.</p>
-                                            <p className="ml-3 fs-6 col-lg-8">1. Required Version of safe browser Dignissimos in sequi omnis inventore provident fugit. Fuga unde libero maxime quas doloribus est itaque quos similique, quo, voluptates quaerat, nisi laborum.</p>
-                                            <div className="d-flex justify-content-center">
-                                                <Link to='/testpage'><a><button className="pay_btn3 ">Proceed to Test</button></a></Link>
-                                            </div>
-                                        </div>
+                                        <p style={{textAlign:'left',fontSize:'19px',fontWeight:'500',marginLeft:'20px'}}>Instructions for students:</p>
+                                     
                                     </div>
+                                    <div>
+                                        <ul style={{textAlign:'left',fontSize:'14px'}}  >
+                                            <li  >Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
+                                            <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
+                                            <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
+                                            <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
+                                        </ul>
+                                    </div>
+                                   <div  style={{padding:'40px'}}>
+                                   <Link to='/testpage'>   <Button >  <div className="button_slide slide_down">Proceed to Test </div></Button> </Link>
+                                   </div>
                                 </div>
                             </div>
                         </div>

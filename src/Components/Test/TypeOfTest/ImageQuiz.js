@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { useAlert } from 'react-alert'
 import { Link, useHistory } from 'react-router-dom'
-import { useSelector, useDispatch } from "react-redux";
-import { Avatar, Button, Container, Divider, Grid, List, ListItemText, Typography } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { Avatar, Button, Container, Divider, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -10,7 +10,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { getTest } from "../../../actions/Test/TestAction";
-import Timer from "./Timer";
+import '../triangle.css'
 
 const ImageQuiz1 = ({ test }) => {
 
@@ -106,21 +106,10 @@ const ImageQuiz1 = ({ test }) => {
     const classes = useStyle()
     let i;
 
-    let oneOption = 'One Quiz Correct Test'
-    let imageTest = "One Images Quiz Correct Test"
-    let allOption = "Mulitpal Quiz Select Test"
-    let threeOption = "Three Quiz Test"
-    let fiveOption = "Five Quiz Test"
-
     let arrs = []
 
     const alert = useAlert();
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
-    const [data, setData] = useState([]);
-    const [dataExam, setDataExam] = useState([]);
-    const [count, setCount] = useState(1);
-    const [dataTemp, setDataTemp] = useState([]);
     const [sect, setSect] = useState(0);
     const [radioselect, setRadioSelect] = useState();
     const [backup, setBackup] = useState([]);
@@ -132,6 +121,7 @@ const ImageQuiz1 = ({ test }) => {
     const handleSect = (index) => {
         setSect(index)
         window.scrollTo(0, 0)
+        getBackup()
 
     }
     //new code
@@ -148,29 +138,23 @@ const ImageQuiz1 = ({ test }) => {
             let item = { id, classSection }
             dispatch(getTest(item));
         }
-        checkPayment()
         getBackupData()
     }, [dispatch])
 
 
     const submit = (marks, section, obj, rightAns, question) => {
         const lastTime = `${minutes}-${seconds}`
-        console.log('marks', marks)
-        console.log('section', section)
-        console.log('obj', obj)
-        console.log('rightAns', rightAns)
-        console.log('question', question)
+        var carrer = ''
+
 
         if ("/media/" + rightAns === obj) {
             alert.success("Right Ans")
-            sendDataResult(typeOfTest, Class, section, question, marks[0])
-            sendDataBackup(Class, section, question, typeOfTest, obj, lastTime)
+            sendDataResult(typeOfTest, Class, section, question, marks[0], carrer, lastTime, obj)
             return
         } else {
             alert.error("Wrong Ans")
             let marks = 0
-            sendDataResult(typeOfTest, Class, section, question, marks)
-            sendDataBackup(Class, section, question, typeOfTest, obj, lastTime)
+            sendDataResult(typeOfTest, Class, section, question, marks[0], carrer, lastTime, obj)
             return
         }
     };
@@ -188,24 +172,6 @@ const ImageQuiz1 = ({ test }) => {
             body: JSON.stringify(item),
         }).then((result) => {
             result.json().then((resp) => {
-            });
-        });
-    };
-
-
-    const sendDataBackup = async (Class, section, question, typeOfTest, obj, lastTime) => {
-        let item = { Class, section, question, typeOfTest, obj, lastTime, classSection };
-        await fetch(`${process.env.REACT_APP_API_URL}/api/test-backup/`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user && user.access}`,
-            },
-            body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-                getBackup()
             });
         });
     };
@@ -265,14 +231,14 @@ const ImageQuiz1 = ({ test }) => {
         });
 
     let timeArray = []
-    if (backup && backup.length === 0){
+    if (backup && backup.length === 0) {
         test.discreption &&
-        test.discreption.forEach((item, index) => {
-            timeArray.push(item.title.duration);
-            localStorage.setItem("time", item.title.duration)
-        });
+            test.discreption.forEach((item, index) => {
+                timeArray.push(item.title.duration);
+                localStorage.setItem("time", item.title.duration)
+            });
     }
-    
+
 
     if (test.data) {
         for (i = 0; i < test.data.length; i++) {
@@ -283,26 +249,6 @@ const ImageQuiz1 = ({ test }) => {
     }
 
 
-    const checkPayment = async () => {
-        let item = { typeOfTest, Class, classSection };
-        await fetch(`${process.env.REACT_APP_API_URL}/api/payment-router/`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user && user.access}`,
-            },
-            body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-                if (resp === 402) {
-                    localStorage.removeItem("")
-                    alert.error("you need to pay")
-                    history.push('/')
-                }
-            });
-        });
-    };
 
     return (
         <>
@@ -315,15 +261,15 @@ const ImageQuiz1 = ({ test }) => {
                         <Typography variant="h5">Exam Name: {Class} th</Typography>
                     </Grid>
                     <Grid item xs={6} sm={6} className={classes.grids2}>
-                  <Typography variant='h5' >Total Questions: {test.data && test.data.length}</Typography>
-                  <Typography variant="h5">Total Time:{test.discreption && Number(test.discreption[0].title.duration)} </Typography>
-                  <Typography variant="h4" style={{ display: 'flex' }}>Time Left: &nbsp; </Typography>
-                  {minutes === 0 && seconds === 0
-                    ? ''
-                    : <>
-                      <Typography variant='h4' style={{ color: 'red' }}> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Typography> </>
-                  }
-                </Grid>
+                        <Typography variant='h5' >Total Questions: {test.data && test.data.length}</Typography>
+                        <Typography variant="h5">Total Time:{test.discreption && Number(test.discreption[0].title.duration)} </Typography>
+                        <Typography variant="h4" style={{ display: 'flex' }}>Time Left: &nbsp; </Typography>
+                        {minutes === 0 && seconds === 0
+                            ? ''
+                            : <>
+                                <Typography variant='h4' style={{ color: 'red' }}> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Typography> </>
+                        }
+                    </Grid>
                 </Grid>
             </Container>
             <Divider />
@@ -398,28 +344,32 @@ const ImageQuiz1 = ({ test }) => {
 
                             )
                         }
-                    </Grid>
-                    <Grid container >
-                        <Grid item xs={6} md={8} > <Button variant="contained" className={classes.buttons1} onClick={() => sect > 0 && sect < arrs.length ? handleSect(sect - 1) : ''} >Previous</Button>
+                        <Grid container align='left' >
+                            <Grid item xs={6} md={8} > <Button onClick={() => sect > 0 && sect < arrs.length ? handleSect(sect - 1) : ''} ><div className="button_slidenext slide_rightnext" >Previous</div></Button>
+                            </Grid>
 
+                            {
+                                sect < arrs.length - 1 ?
+                                    <Grid item xs={6} md={4} > <Button onClick={() => sect < arrs.length - 1 ? handleSect(sect + 1) : ''} > <div className="button_slidenext slide_rightnext" >Next</div></Button>
+                                    </Grid>
+                                    :
+                                    <Grid item xs={6} md={4} > <Link to="/result" ><Button > <div className="button_slidenext slide_rightnext" >Submit</div></Button></Link>
+                                    </Grid>
+                            }
                         </Grid>
-                        <Grid item xs={6} md={4} > <Button variant="contained" className={classes.buttons1} onClick={() => sect < arrs.length - 1 ? handleSect(sect + 1) : ''} >Next</Button>
-                        </Grid>
-
 
                     </Grid>
+
                 </Grid>
                 <Grid container className={classes.congrid}>
                     <Grid item >
-                        <Link to="/result" ><Button className={classes.headbutton}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>SUBMIT TEST </Typography></Button></Link>
+                        <Link to="/result" >
+                            <span className="btn10">Submit Test</span>
+                            <div className="transition"></div>      </Link>
                     </Grid>
                 </Grid>
             </Container>
-
-
-
         </>
-
     );
 };
 

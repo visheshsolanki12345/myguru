@@ -8,7 +8,15 @@ import { useAlert } from "react-alert";
 import Loader from "../Loader/Loader";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import dotenv from 'dotenv'
+
+import ReactDOM from 'react-dom';
+import GoogleLogin from 'react-google-login';
+
 const Login = () => {
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
+
   //============================================== Hooks & Variables ===================================================//
   const history = useHistory();
   const [loading, setLoading] = useState();
@@ -21,10 +29,10 @@ const Login = () => {
     setPasswordShown(!passwordShown);
   };
   dotenv.config()
-console.log(process.env)
+  console.log(process.env)
   //============================================== Show Password Toggle Function ===================================================//
   const login = () => {
-    let item = { username, password};
+    let item = { username, password };
     setLoading(true);
     fetch(`${process.env.REACT_APP_API_URL}/api/account/login/`, {
       method: "POST",
@@ -66,18 +74,7 @@ console.log(process.env)
         data-target="#navbar-wd"
         data-offset="98"
       >
-        {/* <!-- LOADER --> */}
-        {/* <div id="preloader">
-                    <div className="loader">
-                        <img src="assets/images/loader.gif" alt="#" />
-                    </div>
-                </div> */}
-        {/* <!-- end loader -->
-<!-- END LOADER -->
 
-<!-- Start header --> */}
-
-        {/* <!-- End header --> */}
         <section className="inner_banner margin-top_7">
           <div className="container">
             <div className="row">
@@ -227,9 +224,17 @@ console.log(process.env)
                     <button className="neo-button">
                       <i className="fa fa-linkedin fa-1x"></i>
                     </button>
-                    <button className="neo-button">
+                    {/* <button className="neo-button">
                       <i className="fa fa-google fa-1x"></i>{" "}
-                    </button>
+                    </button> */}
+                    <GoogleLogin
+
+                      clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com"
+                      buttonText=""
+                      onSuccess={responseGoogle}
+                      onFailure={responseGoogle}
+                      cookiePolicy={'single_host_origin'}
+                    />
                     <button className="neo-button">
                       <i className="fa fa-youtube fa-1x"></i>{" "}
                     </button>

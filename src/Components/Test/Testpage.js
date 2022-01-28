@@ -1,22 +1,24 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import '../css/bootstrap.min.css'
 import '../css/pogo-slider.min.css'
 import '../css/style.css'
 import '../css/custom.css'
+import './triangle.css'
+
 import { useAlert } from 'react-alert'
 import Loader from '../Loader/Loader'
 import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { getTest } from '../../actions/Test/TestAction'
 import ImageQuiz from "./TypeOfTest/ImageQuiz";
-import { Avatar, Button, Checkbox, Container, Divider, Grid, List, ListItemText, Typography } from "@material-ui/core";
+import { Avatar, Button, Checkbox, Container, Divider, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import Timer from "./TypeOfTest/Timer";
+
 
 const Testpage = () => {
   const { test, loading } = useSelector((state) => state.test)
@@ -167,30 +169,27 @@ const Testpage = () => {
     // console.log('rightAns', rightAns)
     // console.log('question', question)
     if (typeOfTest === oneOption) {
-        if (rightAns === obj) {
-          sendDataResult(typeOfTest, Class, section, question, marks[0], carrer)
-          sendDataBackup(Class, section, question, typeOfTest, obj, lastTime)
-          return alert.success("Right Ans")
-        } else {
-          if (rightAns !== obj) {
-            let marks = 0
-            sendDataResult(typeOfTest, Class, section, question, marks, carrer)
-            sendDataBackup(Class, section, question, typeOfTest, obj, lastTime)
-            return alert.error("Wrong Ans")
+      if (rightAns === obj) {
+        sendDataResult(typeOfTest, Class, section, question, marks[0], carrer, lastTime, obj)
+        return alert.success("Right Ans")
+      } else {
+        if (rightAns !== obj) {
+          let marks = 0
+          sendDataResult(typeOfTest, Class, section, question, marks[0], carrer, lastTime, obj)
+          return alert.error("Wrong Ans")
         }
       }
     } else {
       if (typeOfTest === allOption || typeOfTest === threeOption || typeOfTest === fiveOption) {
-        sendDataResult(typeOfTest, Class, section, question, marks[0], carrer)
-        sendDataBackup(Class, section, question, typeOfTest, obj, lastTime)
+        sendDataResult(typeOfTest, Class, section, question, marks[0], carrer, lastTime, obj)
       }
     }
   }
 
-  const sendDataResult = async (typeOfTest, Class, section, question, marks, carrer) => {
-    let item = { typeOfTest, Class, section, question, marks, carrer, classSection };
+  const sendDataResult = async (typeOfTest, Class, section, question, marks, carrer, lastTime, object) => {
+    let item = { typeOfTest, Class, section, question, marks, carrer, classSection, lastTime, object };
     // console.log(item)
-    await fetch(`${process.env.REACT_APP_API_URL}/api/save-result/`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/api/test/`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -205,22 +204,6 @@ const Testpage = () => {
   };
 
 
-  const sendDataBackup = async (Class, section, question, typeOfTest, obj, lastTime) => {
-    let item = { Class, section, question, typeOfTest, obj, lastTime, classSection };
-    await fetch(`${process.env.REACT_APP_API_URL}/api/test-backup/`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user && user.access}`,
-      },
-      body: JSON.stringify(item),
-    }).then((result) => {
-      result.json().then((resp) => {
-        getBackup()
-      });
-    });
-  };
 
   const getBackup = async () => {
     let item = { typeOfTest, Class, classSection }
@@ -274,12 +257,12 @@ const Testpage = () => {
     test.discreption.forEach((item, index) => {
       rows.push(item.typeOfTest.selectTest);
     });
-    
+
   let timeArray = []
   test.discreption &&
     test.discreption.forEach((item, index) => {
       timeArray.push(item.title.duration);
-      if (item.typeOfTest.selectTest !== imageTest){
+      if (item.typeOfTest.selectTest !== imageTest) {
         localStorage.setItem("time", item.title.duration)
       }
     });
@@ -354,7 +337,7 @@ const Testpage = () => {
                   <Typography variant="h3" style={{ alignSelf: 'center' }}>Sections </Typography>
 
                   <Container>
-                    {arrs && arrs.map((a, index) => <div className='p-3'> <Button key={index} variant='contained' className={classes.buttons} onClick={() => handleSect(index)} style={{ background: sect === index ? "linear-gradient(45deg, #FFBD35 30%, #FFBD35 90%)" : 'linear-gradient(45deg, #548CFF 30%, #548CFF 90%)', boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)' }}><Typography variant='h5' style={{ color: 'white', fontWeight: '700', fontSize: '' }}>{a}</Typography></Button></div>
+                    {arrs && arrs.map((a, index) => <div className='p-3'> <Button key={index} variant='contained' className={classes.buttons} onClick={() => handleSect(index)} style={{ background: sect === index ? "linear-gradient(45deg, #FFBD35 30%, #FFBD35 90%)" : 'linear-gradient(45deg, #548CFF 30%, #548CFF 90%)', boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)' }}><Typography variant='h5' style={{ color: 'white', fontWeight: '700', fontSize: '12px' }}>{a}</Typography></Button></div>
 
                     )}
                   </Container>
@@ -458,25 +441,35 @@ const Testpage = () => {
                         </Container>
                       }
                     }
-
                     )
                   }
-                </Grid>
-                <Grid container >
-                  <Grid item xs={6} md={8} > <Button variant="contained" className={classes.buttons1} onClick={() => sect > 0 && sect < arrs.length ? handleSect(sect - 1) : ''} >Previous</Button>
-
+                  <Grid container align='left' >
+                    <Grid item xs={6} md={8} > <Button onClick={() => sect > 0 && sect < arrs.length ? handleSect(sect - 1) : ''} ><div className="button_slidenext slide_rightnext" >Previous</div></Button>
+                    </Grid>
+                    {
+                    sect < arrs.length - 1 ?
+                    <Grid item xs={6} md={4} > <Button onClick={() => sect < arrs.length - 1 ? handleSect(sect + 1) : ''} > <div className="button_slidenext slide_rightnext" >Next</div></Button>
+                    </Grid>
+                    :
+                    <Grid item xs={6} md={4} > <Link to="/result" ><Button > <div className="button_slidenext slide_rightnext" >Submit</div></Button></Link>
+                    </Grid>
+                    }
+                    
                   </Grid>
-                  <Grid item xs={6} md={4} > <Button variant="contained" className={classes.buttons1} onClick={() => sect < arrs.length - 1 ? handleSect(sect + 1) : ''} >Next</Button>
-                  </Grid>
 
                 </Grid>
+
               </Grid>
               <Grid container className={classes.congrid}>
                 <Grid item >
-                  <Link to="/result" ><Button className={classes.headbutton}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>SUBMIT TEST </Typography></Button></Link>
+                  <Link to="/result" >
+                    <span className="btn10">Submit Test</span>
+                    <div className="transition"></div> 
+                  </Link>
                 </Grid>
               </Grid>
-            </Container></>)
+            </Container></>
+            )
       }
 
     </>

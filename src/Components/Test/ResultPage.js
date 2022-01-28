@@ -2,23 +2,15 @@ import React, { useState, useEffect, Fragment } from 'react'
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert'
 import { Table } from 'react-bootstrap';
-import PieChar from './PieChar'
-import BarChart, { Bpp } from './BarChart'
+import { Bpp } from './BarChart'
 import './triangle.css'
 import { useSelector, useDispatch } from "react-redux";
 import { getTest } from '../../actions/Test/TestAction';
 import { Button, Container, Grid, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import Demo from './BarChart'
-import ChartMain from './BarChart';
 import Analysis from './Analysis';
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-
-
-const tableData = {
-    color: "#000"
-}
 
 
 const ResultPage6To9 = () => {
@@ -81,74 +73,16 @@ const ResultPage6To9 = () => {
         }).then((result) => {
             result.json().then((resp) => {
                 setData(resp)
-                if (result.status !== 200) {
-                    alert.error(resp)
-                }
-                if (resp === 404){
+                console.log(resp)
+                if (resp === 404) {
                     alert.error("You Need to pay")
                     return history.push('/')
                 }
-                deleteReportData()
-                deleteBackup()
-                paymentDecriment()
                 setLoading(false)
             })
         })
     }
 
-
-    const deleteReportData = async () => {
-        let item = { Class, typeOfTest, classSection }
-        await fetch(`${process.env.REACT_APP_API_URL}/api/delete-result/`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user && user.access}`,
-            },
-            body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-            });
-        });
-    };
-
-
-    const deleteBackup = async () => {
-        let item = { Class, typeOfTest, classSection }
-        await fetch(`${process.env.REACT_APP_API_URL}/api/delete-backup/`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user && user.access}`,
-            },
-            body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-            });
-        });
-    };
-
-    const paymentDecriment = async () => {
-        let item = { Class, typeOfTest, classSection }
-        await fetch(`${process.env.REACT_APP_API_URL}/api/payment-decriment/`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user && user.access}`,
-            },
-            body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-                if(resp === 404){
-                    alert.error("Your need pay")
-                    history.push('/')
-                }
-            });
-        })
-    };
 
 
 
@@ -202,9 +136,11 @@ const ResultPage6To9 = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        </Container>
-                        {/* <div className="center mb-5">
-                        <div className="mx-5 w-75">
+                    </Container>
+
+                    
+                    <div className="center mb-5 mt-5">
+                        <div className="mx-5 w-100">
                             <h2>Key to Grades</h2>
                             <table className="table text-left border text-center">
                                 <thead>
@@ -218,10 +154,10 @@ const ResultPage6To9 = () => {
                                     {
                                         data.map((e) =>
                                             <tr>
-                                                <td>{e.section}</td>
+                                                <td><Typography variant='h5'>{e.section}</Typography></td>
                                                 {
                                                     Object.entries(e.interpretatio.grade.the_json).map(([k, v]) =>
-                                                        <td>{`${k} - ${v}`}</td>
+                                                        <td><Typography variant='h5'>{`${k} - ${v}`}</Typography></td>
                                                     )}
 
                                             </tr>
@@ -231,41 +167,39 @@ const ResultPage6To9 = () => {
                                 </tbody>
                             </table>
                         </div>
-                    </div> */}
+                    </div>
 
                     {
                         typeOfTest === "Mulitpal Quiz Select Test" ? (
-                            
-                    <Container>
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell ><Typography variant='h4'>Career and Cluster</Typography></TableCell>
-                                        <TableCell align='left' ><Typography variant='h4'>Section</Typography></TableCell>
-                                       
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {data.map((e) => (
-                                        <TableRow key={e.section}>
-                                            <TableCell component="th" scope="row">
-                                                <Typography variant='h5'>{e.carrer.newCareer}</Typography>
-                                            </TableCell>
-                                            <TableCell ><Typography variant='h5'>{e.section}</Typography></TableCell>
-                                          
 
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        </Container>
+                            <Container>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="caption table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell ><Typography variant='h4'>Career and Cluster</Typography></TableCell>
+                                                <TableCell align='left' ><Typography variant='h4'>Section</Typography></TableCell>
+
+                                            </TableRow>
+                                        </TableHead>
+                                        {/* <TableBody>
+                                            {data.map((e) => (
+                                                <TableRow key={e.section}>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant='h5'>{e.carrer.newCareer}</Typography>
+                                                    </TableCell>
+                                                    <TableCell ><Typography variant='h5'>{e.section}</Typography></TableCell>
+
+
+                                                </TableRow>
+                                            ))}
+                                        </TableBody> */}
+                                    </Table>
+                                </TableContainer>
+                            </Container>
                         )
                             :
                             <></>
-
-
                     }
 
                     <Container>

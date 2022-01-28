@@ -2,37 +2,11 @@ import '../css/bootstrap.min.css'
 import '../css/pogo-slider.min.css'
 import '../css/style.css'
 import '../css/custom.css'
-import { useAlert } from 'react-alert'
-import Loader from '../Loader/Loader'
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Link } from 'react-router-dom'
-import { getTest } from '../../actions/Test/TestAction'
-import { useSelector, useDispatch } from "react-redux";
+import './triangle.css'
 
 const PaymentConfirm = () => {
-    // const { test, loading } = useSelector((state) => state.test)
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     if (test && test.length === 0) {
-    //         let id = localStorage.getItem("id")
-    //         let item = { id }
-    //         dispatch(getTest(item));
-    //     }
-    // }, [dispatch])
-
-
-    // let timeArray = []
-    // test.discreption &&
-    //     test.discreption.forEach((item, index) => {
-    //         timeArray.push(item.title.duration);
-    //         localStorage.setItem("time", item.title.duration)
-    //     });
-
-    // if(loading){
-    //     return <Loader />
-    // }
-
     return (
         <div>
             {/* <!-- Welcome My Guru section  --> */}
@@ -51,7 +25,7 @@ const PaymentConfirm = () => {
                                         <i className="fas fa-check-circle check_circle mt-3"></i>
                                         <h1 className="text-start mt-3 text-center text-light">Payment Confirmed</h1>
                                         <h1 className="text-start mt-3 fw-bold text-light text-center w-75">We have sent you an email with all the details of your order with order no. xxxxxxxxxx</h1>
-                                        <Link to='/paymentconfirm'><a><button className="btn proceed_test">Proceed to test</button></a></Link>
+                                        <Link to='/paymentconfirm'><a><button className="button_slide slide_down">Proceed to test</button></a></Link>
                                     </div>
 
                                 </div>

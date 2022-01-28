@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getTest } from '../../actions/Test/TestAction'
 import { Container, Grid, makeStyles, Typography } from '@material-ui/core'
 import { Button } from '@mui/material'
+import './triangle.css'
 
 const PaymentSummary = () => {
 
@@ -216,12 +217,12 @@ const PaymentSummary = () => {
 
                         {
                             cont ?
-                                <Button className={classes.buttons} onClick={() => continueTest()} ><Typography variant='h4' style={{ color: 'white' }}>Continue</Typography></Button>
+                                <Button onClick={() => continueTest()} ><div className="button_slide slide_right"> Continue </div></Button>
                                 :
                                 test.signal && test.signal === '201' ?
-                                    <Button className={classes.buttons}  onClick={() => continueTest()} ><Typography variant='h4' style={{ color: 'white' }}>Continue</Typography></Button>
+                                    <Button  onClick={() => continueTest()} ><div className="button_slide slide_right"> Continue </div></Button>
                                     :
-                                    <Button className={classes.buttons} onClick={() => payTemPayment()}><Typography variant='h4' style={{ color: 'white' }}>PAY</Typography></Button>
+                                    <Button  onClick={() => payTemPayment()}><div className="button_slide slide_right"> Pay </div></Button>
                         }
                     </div></Grid>
 

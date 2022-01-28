@@ -150,13 +150,6 @@ const Analysis = ({ data }) => {
                 <Grid container direction='column' lg={12}>
                   <Grid item style={{ border: '1px solid #96CCFE' }}>
 
-                    {/* <Box className='d-flex align-items-center justify-content-center'> */}
-
-                    {/* <div className='d-inline-flex row align-items-center justify-content-center' >  <div className='d-flex align-items-center justify-content-center'>
-  {Object.keys(r.interpretatio.grade.the_json).map((e, i) => <div className={classes.fontsize}> <div className={e == r.grade ? classes.triangle : classes.priangle}  ></div><Typography className={classes.fontsize}>{e}</Typography></div>)}</div>
-    <div className='d-flex align-items-center justify-content-center'>{Object.values(r.interpretatio.grade.the_json).map((e) => <div className=''><Typography className={classes.fontsize}>{e}</Typography></div>)}</div></div> */}
-
-
                     <div className="d-flex ">
                       {Object.entries(r.interpretatio.grade.the_json).map(([k, v]) =>
                         <div className='text-center p-5'>
@@ -190,8 +183,8 @@ const Analysis = ({ data }) => {
 
                 </Grid>
               </Grid>
-              <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}><b>Score:</b>
-                Your test score in {r.section}  {r.totalCount}  out of {r.totalNoQu}   ({r.grade})</Typography>
+              <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography   style={{ fontSize: '19px' }}><b>&nbsp;Score:</b>
+               &nbsp; Your test score in {r.section}  {r.totalCount}  out of {r.totalNoQu}   ({r.grade})</Typography>
               </Grid>
 
 
@@ -205,7 +198,7 @@ const Analysis = ({ data }) => {
                     <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}> <b>Interpretation:</b> <span>{v}</span></Typography></Grid>
                     <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
 
-                      <List className='mt-2 mx-4'>
+                      <List className='mt-2 mx-1'>
                         <Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}><b>What you can do / What more you can do:</b>
                         </Typography>
                         {
@@ -243,20 +236,20 @@ const Analysis = ({ data }) => {
 
             data && data.map((k, i) =>
               rows2 && rows2.map((r) =>
-              r.map((p) =>
-                p === k.totalCount ?
-                  <>
-                    <ListItem style={{ fontSize: '15px' }}>{i + 1}. {k.section} ({k.totalCount}-{k.grade})</ListItem>
+                r.map((p) =>
+                  p === k.totalCount ?
+                    <>
+                      <ListItem style={{ fontSize: '15px' }}>{i + 1}. {k.section} ({k.totalCount}-{k.grade})</ListItem>
 
-                  </>
-                  :
-                  ""
-              )))
+                    </>
+                    :
+                    ""
+                )))
 
           }
         </List>
       </Grid>
-      
+
 
     </>
   )

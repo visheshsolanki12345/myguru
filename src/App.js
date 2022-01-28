@@ -31,7 +31,7 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-            {/* <Head   er /> */}
+            <Header />
                 <Switch>
                 <Route exact path="/" component={MyGuruHome} />
                     <Route exact path="/vocational-career" component={VocationalImages} />
