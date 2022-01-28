@@ -9,13 +9,58 @@ import Loader from "../Loader/Loader";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import dotenv from 'dotenv'
 
-import ReactDOM from 'react-dom';
+import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 
 const Login = () => {
-  const responseGoogle = (response) => {
-    console.log(response);
+
+  function uuidv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
   }
+
+
+  const responseGoogle = (response) => {
+    console.log('google', response)
+    // setLoading(true)
+    let email = response.Iw.profileObj.email
+    let name = response.Iw.name
+    let campus = 'student'
+    let password = uuidv4()
+    // register(campus, name, email, password)
+
+    // setLoading(false)
+  }
+
+  const responseFacebook = (response) => {
+    console.log('facebook', response);
+  }
+
+
+  const register = (campus, name, email, password) => {
+    let item = { campus, name, email, password }
+    fetch(`${process.env.REACT_APP_API_URL}/api/account/register/`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(item)
+    }).then((result) => {
+      result.json().then((resp) => {
+        // console.log(resp)
+        if (result.status !== 200) {
+          alert.error(resp.detail)
+        }
+        if (result.status === 200) {
+          localStorage.setItem("user-details", JSON.stringify(resp));
+          history.push("/")
+        }
+      })
+    })
+  }
+
 
   //============================================== Hooks & Variables ===================================================//
   const history = useHistory();
@@ -29,7 +74,6 @@ const Login = () => {
     setPasswordShown(!passwordShown);
   };
   dotenv.config()
-  console.log(process.env)
   //============================================== Show Password Toggle Function ===================================================//
   const login = () => {
     let item = { username, password };
@@ -217,27 +261,30 @@ const Login = () => {
                   </a>
                   <div className="clearfix"></div>
                   <div className="social-buttons">
-                    <b>Or You can Login with</b>
-                    <button className="neo-button">
-                      <i className="fa fa-facebook fa-1x"></i>{" "}
-                    </button>
-                    <button className="neo-button">
-                      <i className="fa fa-linkedin fa-1x"></i>
-                    </button>
+                    {/* <b>Or You can Login with</b> */}
                     {/* <button className="neo-button">
-                      <i className="fa fa-google fa-1x"></i>{" "}
+                      <i className="fa fa-facebook fa-1x"></i>{" "}
                     </button> */}
-                    <GoogleLogin
 
+
+
+                    <FacebookLogin
+                      appId="465681375014136"
+                      autoLoad={true}
+                      fields="name,email,picture"
+                      callback={responseFacebook}
+                      cssClass="my-facebook-button-class"
+                      icon="fa-facebook"
+                    />,
+
+                    <GoogleLogin
                       clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com"
+                      // clientId="357478272810-m310ok6l5fehn2872k7nh78mnsa4efo8.apps.googleusercontent.com"
                       buttonText=""
                       onSuccess={responseGoogle}
                       onFailure={responseGoogle}
                       cookiePolicy={'single_host_origin'}
                     />
-                    <button className="neo-button">
-                      <i className="fa fa-youtube fa-1x"></i>{" "}
-                    </button>
                     <button className="neo-button">
                       <i className="fa fa-twitter fa-1x"></i>{" "}
                     </button>

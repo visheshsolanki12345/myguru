@@ -47,7 +47,6 @@ const Signup = () => {
             return alert.error("Password did not Match!")
         }
         setLoading(true)
-        // fetch("https://myguruonline.herokuapp.com${process.env.R.API_URL}/api/account/register/", {
         fetch(`${process.env.REACT_APP_API_URL}/api/account/register/`, {
             method: "POST",
             headers: {
@@ -69,7 +68,7 @@ const Signup = () => {
                 }
                 if (result.status === 200) {
                     localStorage.setItem("user-details", JSON.stringify(resp));
-                    history.push("/login")
+                    history.push("/")
                     setCampus("")
                     setName("")
                     setEmail("")
