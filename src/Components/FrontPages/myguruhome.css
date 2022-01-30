@@ -1,0 +1,126 @@
+.class_selection{
+    font-weight: 700;
+    background: green;
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white!important;
+    cursor: pointer;
+    box-shadow: 0px 5px rgb(40 167 69 / 70%), inset 0 1px 1px rgb(255 255 255 / 70%), inset 0 0 3px rgb(252 252 252 / 60%);
+    transition: transform 100ms, box-shadow 100ms, background-color 200ms, color 200ms;
+}
+
+.class_selection:hover{
+    transform: scale(0.9);  
+    opacity: 0.9;
+}
+.class_selection1{
+    font-weight: 700;
+
+    background: rgb(0, 123, 255);
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white!important;
+
+    cursor: pointer;
+    box-shadow: 0px 5px rgb(0 123 255 / 70%), inset 0 1px 1px rgb(255 255 255 / 70%), inset 0 0 3px rgb(252 252 252 / 60%);
+}
+
+
+
+
+.class_selection1:hover{
+    transform: scale(0.9);  
+    opacity: 0.9;
+}
+.class_selection2{
+    font-weight: 700;
+
+    background: rgb(220, 53, 70);
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white!important;
+
+    cursor: pointer;
+    box-shadow: 0px 5px rgb(220 53 69 / 70%), inset 0 1px 1px rgb(255 255 255 / 70%), inset 0 0 3px rgb(252 252 252 / 60%);
+    transition: transform 100ms, box-shadow 100ms, background-color 200ms, color 200ms;
+}
+
+.class_selection2:hover{
+    transform: scale(0.9);  
+    opacity: 0.9;
+}
+.class_selection3{
+    font-weight: 700;
+
+    background: rgb(255, 193, 7);
+    border-radius: 50%;
+    height: 12rem;
+    width: 12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white!important;
+
+    cursor: pointer;
+    box-shadow:0px 5px rgb(255 193 7 / 70%), inset 0 1px 1px rgb(255 255 255 / 70%), inset 0 0 3px rgb(252 252 252 / 60%);
+    
+    transition: transform 100ms, box-shadow 100ms, background-color 200ms, color 200ms;
+}
+
+.class_selection3:hover{
+    transform: scale(0.9);  
+    opacity: 0.9;
+}
+
+@media screen and (max-width: 480px) {
+    /* .class_selection{
+        background: green;
+        border-radius: 50%;
+        height: 100px;
+        width: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0px 5px rgb(40 167 69 / 70%), inset 0 1px 1px rgb(255 255 255 / 70%), inset 0 0 3px rgb(252 252 252 / 60%);
+        transition: transform 100ms, box-shadow 100ms, background-color 200ms, color 200ms;
+    }
+    
+    .class_selection:hover{
+        transform: scale(0.9);  
+        opacity: 0.9;
+    } */
+    
+  }
+
+  .i_konw{
+      font-size: 1.4rem!important;
+    font-weight: 700;
+
+  }
+
+  .career_logo{
+      font-size:30px;
+transition: 0.9s;
+  }
+  .i_konw:hover .career_logo{
+      transform: rotate(360deg);
+  }

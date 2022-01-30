@@ -3,81 +3,72 @@ import "../css/bootstrap.min.css";
 import "../css/pogo-slider.min.css";
 import "../css/style.css";
 import "../css/custom.css";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import "./myguruhome.css";
+import { Link, useHistory } from "react-router-dom";
+import Header from "./Header";
+import { getTest } from "../../actions/Test/TestAction";
+import { useSelector, useDispatch } from "react-redux";
+import ClassSection from "./ClassSection";
+
 //mui modal
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CancelIcon from "@mui/icons-material/Cancel";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { Grid } from "@mui/material";
-import { MdLibraryBooks, MdOutlineArticle } from "react-icons/md";
-import { BsCameraVideoFill } from "react-icons/bs";
-import { GrWorkshop } from "react-icons/gr";
-import { BsMapFill } from "react-icons/bs";
-import { FaTeamspeak } from "react-icons/fa";
+
 //mui modal style
 const style = {
-  position: "relative",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  maxWidth: "476px",
-  height: "70vh",
+  width: "60%",
+  height: "50vh",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  padding: "0 0 0 30px",
-  // p: 4,
+  p: 4,
 };
 
 const MyGuruHome = () => {
-  const [datasection, setDataSection] = React.useState([]);
+  const [datasection, setDataSection] = React.useState([])
   const getDataSection = (id) => {
     fetch(`${process.env.REACT_APP_API_URL}/api/class-section/${id}/`, {
       method: "GET",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
     }).then((result) => {
       result.json().then((resp) => {
-        setDataSection(resp);
-      });
-    });
-  };
-
+        setDataSection(resp)
+      })
+    })
+  }
   //mui modal state
   const [open, setOpen] = React.useState(false);
-  const [main, setMain] = useState(false);
   const [openSection, setOpenSection] = React.useState(false);
-  const [first, setFirst] = useState(false);
-  const [second, setSecond] = useState(false);
-  const [three, setThree] = useState(false);
-  const [classStaticID, setClassStaticID] = useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSectionOpen = (id) => {
-    setOpenSection(true);
+    setOpenSection(true)
     removeLocal();
     localStorage.setItem("id", id);
-    getDataSection(id);
-  };
+    getDataSection(id)
+
+  }
   const classSectioniFunc = (id) => {
-    localStorage.setItem("classSection", id);
-    history.push("./paymentsummery");
-  };
+    localStorage.setItem("classSection", id)
+    history.push('./paymentsummery')
+  }
+
 
   const handleSectionClose = () => setOpenSection(false);
   //mui modal state
 
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const [dataMain, setDataMain] = useState([]);
   const [loading, setLoading] = useState(true);
   const [model, setModel] = useState(false);
   const [classId, setClassId] = useState();
@@ -117,45 +108,15 @@ const MyGuruHome = () => {
     removeLocal();
     localStorage.setItem("id", id);
     setClassId(id);
+    // setModel(true)
     setOpen(false);
+    // history.push('./paymentsummery')
   };
 
-  let myArray = [];
-
-  const filterFunc = (list) => {
-    list.map(
-      (p) =>
-        data && data.filter((e) => e.newClass === p).map((m) => myArray.push(m))
-    );
-    setDataMain(myArray);
-  };
-
-  const setClassValue = (clsId) => {
-    setFirst(true);
-    if (clsId === 1) {
-      let classV = ["6", "7", "8"];
-      filterFunc(classV);
-    } else {
-      if (clsId === 2) {
-        let classV = ["9"];
-        filterFunc(classV);
-      } else {
-        if (clsId === 3) {
-          let classV = ["10"];
-          filterFunc(classV);
-        } else {
-          if (clsId === 4) {
-            let classV = ["11", "12"];
-            filterFunc(classV);
-          }
-        }
-      }
-    }
-  };
 
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <div className="ulockd-home-slider mt-4">
         <div className="row">
           <div className="col-12 mt-4">
@@ -165,6 +126,7 @@ const MyGuruHome = () => {
             >
               <div className="container">
                 <div className="row">
+
                   <div className="col-md-12 slide_text">
                     <div className="row justify-content-md-center mt-5">
                       <div className="clearfix mt-5"></div>
@@ -183,7 +145,7 @@ const MyGuruHome = () => {
                       </div>
                       <div
                         className="col-12 col-sm-4 col-xl-3"
-                        onClick={() => setMain(true)}
+                        onClick={handleOpen}
                       >
                         <div className="iconFunction topbg2">
                           <img
@@ -192,7 +154,7 @@ const MyGuruHome = () => {
                             alt=""
                           />
                           <a>
-                            <Button onClick={() => setMain(true)}>
+                            <Button onClick={handleOpen}>
                               6-12<sup>th</sup>
                             </Button>
 
@@ -294,6 +256,7 @@ const MyGuruHome = () => {
         </div>
       </div>
 
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -302,39 +265,40 @@ const MyGuruHome = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            <KeyboardBackspaceIcon
+            <CancelIcon
               style={{ cursor: "pointer", fontSize: "30px" }}
               onClick={() => handleClose()}
             />
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {dataMain &&
-              dataMain.map((e) =>
-                e.classOrCollage.classOrCollage === "Schools" ? (
+            {data.map((e) =>
+              e.classOrCollage.classOrCollage === "Schools" ? (
+                <div
+                  className="button_holder col-sm-3 "
+                  style={{ maxWidth: "100px" }}
+                >
                   <div
-                    className="button_holder col-sm-3 "
-                    style={{ maxWidth: "100px" }}
+                    className="btn btn-lg btn-primary "
+                    style={{ color: "white", padding: "20px" }}
+                    onClick={() => handleSectionOpen(e.id)}
                   >
-                    <div
-                      className="btn btn-lg btn-primary "
-                      style={{ color: "white", padding: "20px" }}
-                      onClick={() => handleSectionOpen(e.id)}
-                    >
-                      Class
-                      <br />
-                      <span>
-                        {e.newClass}
-                        <sup>th</sup>
-                      </span>
-                    </div>
+                    Class
+                    <br />
+                    <span>
+                      {e.newClass}
+                      <sup>th</sup>
+                    </span>
                   </div>
-                ) : (
-                  ""
-                )
-              )}
+                </div>
+              ) : (
+                ""
+              )
+            )}
           </Typography>
         </Box>
       </Modal>
+
+
 
       <Modal
         open={openSection}
@@ -344,7 +308,7 @@ const MyGuruHome = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            <KeyboardBackspaceIcon
+            <CancelIcon
               style={{ cursor: "pointer", fontSize: "30px" }}
               onClick={() => handleSectionClose()}
             />
@@ -360,373 +324,19 @@ const MyGuruHome = () => {
                   style={{ color: "white", padding: "20px" }}
                   onClick={() => classSectioniFunc(e.id)}
                 >
-                  <br />
-                  <span>{e.newClass}</span>
-                </div>
-              </div>
-            ))}
-          </Typography>
-        </Box>
-      </Modal>
 
-      {/* main modal */}
-      <Modal
-        open={main}
-        onClose={() => setMain(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            style={{ marginTop: "20px" }}
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-          >
-            <CancelIcon
-              style={{ cursor: "pointer", fontSize: "30px" }}
-              onClick={() => setMain(false)}
-            />
-          </Typography>
-          <Typography
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-            }}
-            id="modal-modal-description"
-          >
-            <Grid style={{ marginLeft: "130px" }} container spacing={3}>
-              <Grid item>
-                <div
-                  className="class_selection"
-                  onClick={() => setClassValue(1)}
-                >
-                  <div>Class &nbsp;</div>
-                  <div>
-                    6-8<sup>th</sup>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item>
-                <div
-                  className="class_selection1"
-                  style={{ color: "white", padding: "20px" }}
-                  onClick={() => setClassValue(2)}
-                >
-                  Class
                   <br />
                   <span>
-                    9<sup>th</sup>
+                    {e.newClass}
+
                   </span>
                 </div>
-              </Grid>
-            </Grid>
-
-            <Grid
-              style={{ marginLeft: "130px", marginTop: "30px" }}
-              container
-              spacing={3}
-            >
-              <Grid item>
-                {" "}
-                <div
-                  className="class_selection2"
-                  style={{ color: "white", padding: "20px" }}
-                  onClick={() => setClassValue(3)}
-                >
-                  Class
-                  <br />
-                  <span>
-                    10
-                    <sup>th</sup>
-                  </span>
-                </div>{" "}
-              </Grid>
-              <Grid item>
-                <div
-                  className="class_selection3"
-                  style={{ color: "white", padding: "20px" }}
-                  onClick={() => setClassValue(4)}
-                >
-                  Class 11 - 12
-                </div>
-              </Grid>
-            </Grid>
-          </Typography>
-        </Box>
-      </Modal>
-
-      {/* first */}
-      <Modal
-        open={first}
-        onClose={() => setFirst(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            style={{ marginTop: "20px" }}
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-          >
-            <KeyboardBackspaceIcon
-              style={{ cursor: "pointer", fontSize: "30px" }}
-              onClick={() => setFirst(false)}
-            />
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <div className="modal-body">
-              <div className="row">
-                <div className="">
-                  <div className="button_holder">
-                    <Button onClick={() => setThree(true)}>
-                      <a className=" class_selection i_konw">
-                        I Know
-                        <br />
-                        What I Want
-                        <br />
-                        To Do
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-                <div className="">
-                  <div className="button_holder ">
-                    <Button onClick={() => setSecond(true)}>
-                      <a className=" class_selection3 i_konw">
-                        I Wish
-                        <br />
-                        To Explore
-                      </a>
-                    </Button>
-                  </div>
-                </div>
               </div>
-            </div>
+            )
+            )}
           </Typography>
         </Box>
       </Modal>
-
-      {/* Second */}
-      <Modal
-        open={second}
-        onClose={() => setSecond(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            style={{ marginTop: "20px" }}
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-          >
-            <KeyboardBackspaceIcon
-              style={{ cursor: "pointer", fontSize: "30px" }}
-              onClick={() => setSecond(false)}
-            />
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <div className="modal-body">
-              <div className="row">
-                <div className="col-6 text-center">
-                  <div className="button_holder">
-                    <Button onClick={() => setOpen(true)}>
-                      <a className="class_selection3 i_konw">
-                        I Psychometric
-                        <br />
-                        Assessment
-                        <br />
-                        To Do
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-                <div className="col-6 text-center">
-                  <div className="button_holder">
-                    <a className="class_selection2 i_konw">
-                      I Speak
-                      <br />A Counsellor
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Typography>
-        </Box>
-      </Modal>
-
-      {/* three */}
-      <Modal
-        open={three}
-        onClose={() => setThree(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            style={{ marginTop: "20px" }}
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-          >
-            <KeyboardBackspaceIcon
-              style={{ cursor: "pointer", fontSize: "30px" }}
-              onClick={() => setThree(false)}
-            />
-          </Typography>
-          <Typography
-            style={{ marginTop: "20px" }}
-            id="modal-modal-description"
-            sx={{}}
-          >
-            <Grid container spacing={4}>
-              <Grid item>
-                {" "}
-                <div className="">
-                  <a className="class_selection i_konw">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <MdLibraryBooks className="career_logo" />{" "}
-                      <span>
-                        {" "}
-                        career
-                        <br />
-                        Information
-                        <br />
-                        Capsule
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              </Grid>
-              <Grid item>
-                {" "}
-                <div className="">
-                  <a className="class_selection2 i_konw">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <BsCameraVideoFill className="career_logo" />{" "}
-                      <span>
-                        {" "}
-                        Acess
-                        <br />
-                        Expert
-                        <br />
-                        Video
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              </Grid>
-              <Grid item>
-                <div className="">
-                  <a className="class_selection1 i_konw">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <MdOutlineArticle className="career_logo" />{" "}
-                      <span>
-                        {" "}
-                        Featured
-                        <br />
-                        Article
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              </Grid>
-              <Grid item>
-                <div className="">
-                  <a className="class_selection3 i_konw">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <GrWorkshop className="career_logo" />{" "}
-                      <span>
-                        {" "}
-                        Workshop
-                        <br />
-                        Seminar
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              </Grid>
-              <Grid item>
-                <div className="">
-                  <a className="class_selection2 i_konw">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <BsMapFill className="career_logo" />{" "}
-                      <span>
-                        {" "}
-                        Career
-                        <br />
-                        Map
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              </Grid>
-              <Grid item>
-                <div className="">
-                  <a className="class_selection3 i_konw">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <FaTeamspeak className="career_logo" />{" "}
-                      <span>
-                        {" "}
-                        Speak
-                        <br />
-                        To counsellor
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              </Grid>
-            </Grid>
-          </Typography>
-        </Box>
-      </Modal>
-
       {/* mui modals */}
 
       {/*  */}
@@ -750,7 +360,11 @@ const MyGuruHome = () => {
                 <div className="col-6 text-center">
                   {/* <!--<a data-toggle="modal" href="#myModal2" className="btn btn-primary">Launch modal</a>--> */}
                   <div className="button_holder">
-                    <a href="/paymentsummary" id="iknowModalBtn" className="">
+                    <a
+                      href="/paymentsummary"
+                      id="iknowModalBtn"
+                      className="btn btn-lg btn-success square-button"
+                    >
                       I Know
                       <br />
                       What I Want
@@ -1105,6 +719,9 @@ const MyGuruHome = () => {
         </div>
       </div>
 
+
+
+
       {/* <!-- section contact start --> */}
       <div className="section layout_padding padding_bottom-0 ">
         <div className="container">
@@ -1177,6 +794,7 @@ const MyGuruHome = () => {
         </div>
       </div>
       {/* <!-- end section --> */}
+
     </>
   );
 };

@@ -314,7 +314,7 @@ const Testpage = () => {
             <Container className={classes.container}>
               <Grid container>
                 <Grid item xs={6} sm={6} className={classes.grids1}>
-                  <div style={{ marginBottom: '10px' }}><Avatar src="/broken-image.jpg" /></div>
+                  <div style={{ marginBottom: '10px' }}><Avatar src={localStorage.getItem("image") ? localStorage.getItem("image") : "/broken-image.jpg"} /></div>
                   <Typography variant='h5' >Candidate Name: {user && user.last_name}</Typography>
                   <Typography variant="h5">Exam Name: {Class} th</Typography>
                 </Grid>

@@ -6,11 +6,12 @@ import "../css/custom.css";
 import { Link, useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
 import Loader from "../Loader/Loader";
-import { AiOutlineEyeInvisible } from "react-icons/ai";
 import dotenv from 'dotenv'
+import { FaFacebookF } from "react-icons/fa";
 
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
+import './login.css'
 
 const Login = () => {
 
@@ -20,23 +21,34 @@ const Login = () => {
     );
   }
 
+  const onGoogleLoginFailure = (response) => {
+    // console.log(response);
+  }
 
-  const responseGoogle = (response) => {
-    console.log('google', response)
-    // setLoading(true)
-    let email = response.Iw.profileObj.email
-    let name = response.Iw.name
+  const onGoogleLoginSuccess = (response) => {
+    // console.log('google', response)
+    setLoading(true)
+    let email = response.profileObj.email
+    let name = response.profileObj.name
     let campus = 'student'
     let password = uuidv4()
-    // register(campus, name, email, password)
-
-    // setLoading(false)
+    register(campus, name, email, password)
+    localStorage.setItem("image", response.profileObj.imageUrl)
+    setLoading(false)
   }
+
+
 
   const responseFacebook = (response) => {
-    console.log('facebook', response);
+    console.log('facebook', response)
+    setLoading(true)
+    let email = response.email
+    let name = response.name
+    let campus = 'student'
+    let password = uuidv4()
+    register(campus, name, email, password)
+    setLoading(false)
   }
-
 
   const register = (campus, name, email, password) => {
     let item = { campus, name, email, password }
@@ -62,19 +74,18 @@ const Login = () => {
   }
 
 
-  //============================================== Hooks & Variables ===================================================//
   const history = useHistory();
   const [loading, setLoading] = useState();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const alert = useAlert();
   const [passwordShown, setPasswordShown] = useState(false);
-  //============================================== Show Password Toggle Function ===================================================//
+  const alert = useAlert();
+
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+
   dotenv.config()
-  //============================================== Show Password Toggle Function ===================================================//
   const login = () => {
     let item = { username, password };
     setLoading(true);
@@ -215,9 +226,9 @@ const Login = () => {
                     <>
                       <div className="field">
                         {" "}
-                        <i classNameName="fa fa-key"></i>{" "}
+                        <i className="fa fa-key"></i>{" "}
                         <div className="eyeIcon">
-                          <i classNameName="fa fa-eye" onClick={togglePassword}></i>
+                          <i className="fa fa-eye" onClick={togglePassword}></i>
                         </div>{" "}
                         <input
                           type={passwordShown ? "text" : "password"}
@@ -232,10 +243,10 @@ const Login = () => {
                     <>
                       <div className="field">
                         {" "}
-                        <i classNameName="fa fa-key"></i>{" "}
+                        <i className="fa fa-key"></i>{" "}
                         <div className="eyeIcon">
                           <i
-                            classNameName="fa fa-eye-slash"
+                            className="fa fa-eye-slash"
                             onClick={togglePassword}
                           ></i>
                         </div>{" "}
@@ -253,41 +264,35 @@ const Login = () => {
                   <button className="login_btn" onClick={login}>
                     Login
                   </button>
-                  <Link to="/signup" className="float-left">
+                  <Link to="/signup" className="float-left">   password-reset
                     Not Register? Signup Now
                   </Link>
-                  <a href="javascript:;" className="float-right">
-                    Forgot Password?
-                  </a>
+                  <Link to="/password-reset" className="float-right">   
+                  Forgot Password?
+                  </Link>
+   
                   <div className="clearfix"></div>
-                  <div className="social-buttons">
-                    {/* <b>Or You can Login with</b> */}
-                    {/* <button className="neo-button">
-                      <i className="fa fa-facebook fa-1x"></i>{" "}
-                    </button> */}
+                  <div className="social-buttons" style={{display:'flex',gap:'20px',justifyContent:"space-evenly"}}>
 
-
-
+                    <div >
                     <FacebookLogin
-                      appId="465681375014136"
-                      autoLoad={true}
+                      appId="2739846806322407"
+                      autoLoad={false}
                       fields="name,email,picture"
+                      scope="public_profile,user_friends"
                       callback={responseFacebook}
                       cssClass="my-facebook-button-class"
-                      icon="fa-facebook"
-                    />,
-
+                      icon={<FaFacebookF/>} />
+                    </div>
+                    <div>
                     <GoogleLogin
-                      clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com"
-                      // clientId="357478272810-m310ok6l5fehn2872k7nh78mnsa4efo8.apps.googleusercontent.com"
-                      buttonText=""
-                      onSuccess={responseGoogle}
-                      onFailure={responseGoogle}
-                      cookiePolicy={'single_host_origin'}
+                      // clientId="550540451855-qbl4rikdvcm8dh5qc1f2qvkoqcu66rts.apps.googleusercontent.com" // local host clind id
+                      clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com" // deploye clind id
+                      buttonText="Google"
+                      onSuccess={onGoogleLoginSuccess}
+                      onFailure={onGoogleLoginFailure} 
                     />
-                    <button className="neo-button">
-                      <i className="fa fa-twitter fa-1x"></i>{" "}
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>

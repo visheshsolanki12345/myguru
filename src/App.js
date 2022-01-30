@@ -26,6 +26,8 @@ import ResultPage from './Components/Test/ResultPage';
 import Header from './Components/FrontPages/Header';
 import StuPayCheck from './Components/Routers/StuPayCheck';
 import studentdashboard from './Components/Dashboard/studentdashboard'
+import ResetPassword from './Components/Authentication/ResetPassword';
+import ResetPasswordEmail from './Components/Authentication/ResetPasswordEmail';
 
 function App() {
     return (
@@ -37,6 +39,8 @@ function App() {
                     <Route exact path="/vocational-career" component={VocationalImages} />
                     <Route exact path="/signup" component={signup} />
                     <Route exact path="/login" component={login} />
+                    <Route exact path="/password-reset/" component={ResetPasswordEmail} />
+                    <Route exact path="/password-reset/:token" component={ResetPassword} />
                     <Route exact path="/carrer/:id" component={InnerPage} />
                     <Route exact path="/happiness" component={HappinessWellBeing} />
                     <Route exact path="/guruexpert" component={GuruExpertVideos} />
