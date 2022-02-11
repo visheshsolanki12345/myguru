@@ -26,8 +26,11 @@ const Testpage = () => {
   const [minutes, setMinutes] = useState()
   const [seconds, setSeconds] = useState(0);
 
+  let imageTest = "One Images Quiz Correct Test"
+  let typeOfTest = localStorage.getItem('typeOfTest')
   // console.log()
   useEffect(() => {
+    if (typeOfTest !== imageTest){
     let myInterval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -44,7 +47,7 @@ const Testpage = () => {
     }, 1000)
     return () => {
       clearInterval(myInterval);
-    };
+    };}
   });
 
   let rows = []
@@ -115,7 +118,6 @@ const Testpage = () => {
   const classes = useStyle()
   let i;
   let oneOption = 'One Quiz Correct Test'
-  let imageTest = "One Images Quiz Correct Test"
   let allOption = "Mulitpal Quiz Select Test"
   let threeOption = "Three Quiz Test"
   let fiveOption = "Five Quiz Test"
@@ -145,7 +147,6 @@ const Testpage = () => {
   //new code
 
   let Class = localStorage.getItem('Class')
-  let typeOfTest = localStorage.getItem('typeOfTest')
   let classSection = localStorage.getItem('classSection')
 
 
@@ -250,6 +251,7 @@ const Testpage = () => {
   };
 
 
+    
   const handleRadio = (i) => {
     setRadioSelect(i)
   }

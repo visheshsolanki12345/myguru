@@ -1,41 +1,53 @@
-import React, { } from 'react';
+import React from 'react';
+import './Components/css/App.css'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import './App.css';
 import AboutUs from './Components/FrontPages/AboutUs';
 import ContactUs from './Components/FrontPages/ContactUs';
 import ExamList from './Components/ExamList/ExamList';
-import GuruExpertVideos from './Components/YouTubeVideos/GuruExpertVideos';
 import HappinessWellBeing from './Components/CollagePage/HappinessWellBeing';
 import InnerPage from './Components/CollagePage/InnerPage';
 import login from './Components/Authentication/login';
 import MyGuruHome from './Components/FrontPages/MyGuruHome';
 import signup from './Components/Authentication/signup';
 import Footer from './Components/FrontPages//Footer';
-import Prodected from './Prodected'
+import Prodected from './Components/Routers/Prodected'
 import VocationalImages from './Components/FrontPages//VocationalImages';
 import PageNotFound from './Components/FrontPages/PageNotFound';
-import YouTube from './Components/YouTubeVideos/YouTube';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CareerPage from './Components/CareerPage/CareerPage'
 
-////6 to
+// Test Pages
 import PaymentSummary from './Components/Test/PaymentSummary';
 import PaymentConfirm from './Components/Test/PaymentConfirm';
 import Assessment from './Components/Test/Assessment'
 import Testpage from './Components/Test/Testpage';
 import ResultPage from './Components/Test/ResultPage';
 import Header from './Components/FrontPages/Header';
-import StuPayCheck from './Components/Routers/StuPayCheck';
-import studentdashboard from './Components/Dashboard/studentdashboard'
+import studentdashboard from './Components/Dashboard/StudentDashBoard/studentdashboard'
 import ResetPassword from './Components/Authentication/ResetPassword';
 import ResetPasswordEmail from './Components/Authentication/ResetPasswordEmail';
+
+// Article pages
+import ArticlePageViewAll from './Components/CareerPage/CareerPageViewAll/ArticlePageViewAll'
+import ArticleSinglePage from './Components/CareerPage/CareerPageViewAll/ArticleSinglePage'
+
+// Video page
+import VideoPageViewAll from './Components/CareerPage/CareerPageViewAll/VideoPageViewAll'
+import VideoSinglePage from './Components/CareerPage/CareerPageViewAll/VideoSinglePage'
+
+// Counsellor page
+import CounsellorPageViewAll from './Components/CareerPage/CareerPageViewAll/CounsellorPageViewAll';
+import CounsellorSinglePage from './Components/CareerPage/CareerPageViewAll/CounsellorSinglePage';
+
 
 function App() {
     return (
         <div className="App">
             <BrowserRouter>
-            <Header />
+                {/* <Header /> */}
                 <Switch>
-                <Route exact path="/" component={MyGuruHome} />
+                    {/* <Route component={PageNotFound} /> */}
+                    <Route exact path="/" component={MyGuruHome} />
                     <Route exact path="/vocational-career" component={VocationalImages} />
                     <Route exact path="/signup" component={signup} />
                     <Route exact path="/login" component={login} />
@@ -43,26 +55,35 @@ function App() {
                     <Route exact path="/password-reset/:token" component={ResetPassword} />
                     <Route exact path="/carrer/:id" component={InnerPage} />
                     <Route exact path="/happiness" component={HappinessWellBeing} />
-                    <Route exact path="/guruexpert" component={GuruExpertVideos} />
                     <Route exact path="/examlist" component={ExamList} />
                     <Route exact path="/contactus" component={ContactUs} />
-                    <Route exact path="/aboutus" component={AboutUs} />
-                    <Route exact path="/youtube" component={YouTube} />
+                    <Route exact path="/aboutus" component={AboutUs} />                
+                    {/* Carrer Page */}
+                    <Route exact path="/career-page/:id" component={CareerPage} />
+                    
+                    <Route exact path="/article-page" component={ArticlePageViewAll} />
+                    <Prodected exact path="/article-page/:id" component={ArticleSinglePage} />
+
+                    <Prodected exact path="/video-page/" component={VideoPageViewAll} />
+                    <Prodected exact path="/video-page/:id" component={VideoSinglePage} />
+
+                    <Prodected exact path="/counsellor-page/" component={CounsellorPageViewAll} />
+                    <Prodected exact path="/counsellor-page/:id" component={CounsellorSinglePage} />
                     
                     
+{/* ======================================== Prodected Route ========================================================================== */}
+
+
                     {/* /6 to 12 Test/ */}
-                    <Route path="/paymentsummery"> <Prodected Cmp={PaymentSummary} /> </Route>
-                    <Route exact path="/paymentconfirm"> <Prodected Cmp={PaymentConfirm} /> </Route>
-                    <Route exact path="/paymentassessment"> <Prodected Cmp={Assessment} /> </Route>
-                    <Route exact path="/result"> <Prodected Cmp={ResultPage} /> </Route>
+                    <Prodected exact path="/paymentsummery" component={PaymentSummary} />
+                    <Prodected exact path="/paymentconfirm" component={PaymentConfirm} />
+                    <Prodected exact path="/paymentassessment" component={Assessment} />
+                    <Prodected exact path="/result" component={ResultPage} />
+                    <Prodected exact path="/dashboard" component={studentdashboard} />
+                    <Prodected exact path="/testpage" component={Testpage} />
 
-                    <Route exact path="/dashboard"><Prodected Cmp={studentdashboard} /></Route>  
-                    <Route exact path="/testpage"><Prodected Cmp={Testpage} /></Route>  
-
-
-                    {/* <Route component={PageNotFound} /> */}
                 </Switch>
-                <Footer />
+                {/* <Footer /> */}
             </BrowserRouter>
         </div>
     );

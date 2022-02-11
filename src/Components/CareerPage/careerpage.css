@@ -1,0 +1,219 @@
+/* career Page Css */
+.careerpage_main{
+ 
+}
+.careerpage_checkaptitude{
+    padding: 20px;
+}
+
+
+
+
+
+/* Check your Aptitude Css */
+.checkyour_aptitude_main{
+    padding: 25px;
+    max-width: 380px;
+    text-align: left;
+    box-shadow: 0px 11px 35px 0 rgb(25 40 66 / 10%);
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 5px;
+}
+
+.checkyour_aptitude_sub{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.checkyour_aptitude_heading{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #3a4d95;
+}
+
+.checkyour_aptitude_description{
+    font-size: 15px;
+}
+
+.checkyour_aptitude_button{
+    margin-left: 10px;
+
+
+}
+
+.checkyour_aptitude_button{
+    color: #02a569;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 15px;
+
+}
+
+/* career page bottom */
+.careerpagebottom_main{
+    background: #eee;
+  
+}
+
+
+
+
+
+/* career page bottom 4 */
+.careerpagebottom4_main{
+    padding: 15px;
+    background: white;
+}
+.careerpagebottom4_sub{
+    display: flex;
+    flex-direction: column;
+
+}
+.careerpagebottom4_featuredarticles{
+    padding: 10px;
+    color: #666666;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.80857;
+    cursor: pointer;
+}
+
+/* career page bottom 8 start */
+.careerpagebottom8_main{
+    background: #eee;
+}
+
+.careerpagebottom8_sub{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* featured article css start */
+.careerpagebottom8_featuredarticle{
+    background: white;
+    padding: 15px 20px;
+    
+    
+}
+
+.careerpagebottom8_heading{
+    display: flex;
+    justify-content: space-between;
+}
+
+.careerpagebottom8_featurearticle_heading{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+   
+}
+
+.careerpagebottom8_featurearticle_viewall{
+    font-size: 12px;
+    text-transform: uppercase;
+font-weight: 500;
+    color: #212121;
+}
+
+.careerpagebottom8_smallfeaturedarticle{
+display: flex;
+flex-direction: column;
+}
+
+.careerpagebottom8_small_content{
+display: flex;
+gap: 20px;
+}
+
+.careerbottom8_featuredarticle_small_image{
+    width: 30%;
+    
+}
+
+.careerpagebottom8_featuredarticle_small_image_content{
+display: flex;
+flex-direction: column;
+text-align: left;
+}
+
+/* guru expert video css */
+.careerpagebottom8_guruexpert_video{
+    background: white;
+    padding: 15px 20px;
+
+}
+
+.careerpagebottom8_guruexpertvideo_container{
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    background-color: white;
+    display: flex;
+}
+
+.careerpagebottom8_guruexpertvideo_slider{
+padding: 20px;
+border: 1px solid rgba(0, 0, 0, 0.055);
+border-radius: 5px;
+}
+.careerpagebottom8_guruexpertvideo_slide{
+
+}
+
+.careerpagebottom8_featurearticle_viewall_videoimage_thumbnail{
+    display: flex;
+    flex-direction: column;
+}
+.careerpagebottom8_featurearticle_viewall_videoimage_thumbnail::before{
+ 
+}
+
+
+/* list of career css */
+
+.careerpagebottom8_listofcareers{
+    background: white;
+    padding: 15px 20px;
+}
+
+
+/* list of exams */
+
+.careerpagebottom8_listofexams{
+    background: white;
+    padding: 15px 20px;
+}
+
+
+/* list of colleges css */
+
+.careerpagebottom8_listofcolleges{
+    background: white;
+    padding: 15px 20px;
+}
+
+/* guru expert counsellor css */
+
+.careerpagebottom8_guruexpertcounsellor{
+    background: white;
+    padding: 15px 20px;
+}
+
+/* life skills */
+
+.careerpagebottom8_howtoimprove_lifeskills{
+    background: white;
+    padding: 15px 20px;
+}
+
+/* check your potential */
+.careerpagebottom8_checkyourpotential{
+    background: white;
+    padding: 15px 20px;
+}

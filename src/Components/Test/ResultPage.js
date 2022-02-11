@@ -38,6 +38,7 @@ const ResultPage6To9 = () => {
 
     const classes = useStyle()
     const [data, setData] = useState([])
+    const [data2, setData2] = useState([])
     const [loading, setLoading] = useState(true)
     const alert = useAlert()
     const history = useHistory()
@@ -49,7 +50,12 @@ const ResultPage6To9 = () => {
     let discription = localStorage.getItem('discription')
     let classSection = localStorage.getItem('classSection')
 
+    let filNot = []
+    let filterSectionAbcforSection = []
+
+
     const { test } = useSelector((state) => state.test)
+
 
     useEffect(() => {
         if (test && test.length === 0) {
@@ -72,8 +78,12 @@ const ResultPage6To9 = () => {
             body: JSON.stringify(item),
         }).then((result) => {
             result.json().then((resp) => {
-                setData(resp)
-                console.log(resp)
+                if(typeOfTest == "One Images Quiz Correct Test"){
+                    setData(resp[1])
+                    setData2(resp[0])
+                } else{
+                    setData(resp)
+                }
                 if (resp === 404) {
                     alert.error("You Need to pay")
                     return history.push('/')
@@ -82,7 +92,6 @@ const ResultPage6To9 = () => {
             })
         })
     }
-
 
 
 
@@ -105,8 +114,6 @@ const ResultPage6To9 = () => {
                                 <Typography variant='h5' style={{ padding: '10px' }}>{discription}</Typography>
                             </Grid>
                         </Grid>
-
-
                     </Container>
                     {/* Table result */}
                     <Container>
@@ -138,7 +145,7 @@ const ResultPage6To9 = () => {
                         </TableContainer>
                     </Container>
 
-                    
+
                     <div className="center mb-5 mt-5">
                         <div className="mx-5 w-100">
                             <h2>Key to Grades</h2>
@@ -154,11 +161,20 @@ const ResultPage6To9 = () => {
                                     {
                                         data.map((e) =>
                                             <tr>
-                                                <td><Typography variant='h5'>{e.section}</Typography></td>
                                                 {
-                                                    Object.entries(e.interpretatio.grade.the_json).map(([k, v]) =>
-                                                        <td><Typography variant='h5'>{`${k} - ${v}`}</Typography></td>
-                                                    )}
+                                                    e.interpretatio ?
+                                                        <td><Typography variant='h5'>{e.section}</Typography></td>
+                                                        :
+                                                        <></>
+                                                }
+
+                                                {
+                                                    e.interpretatio ?
+                                                        Object.entries(e.interpretatio.grade.the_json).map(([k, v]) =>
+                                                            <td><Typography variant='h5'>{`${k} - ${v}`}</Typography></td>
+                                                        ) :
+                                                        <></>
+                                                }
 
                                             </tr>
                                         )
@@ -201,7 +217,6 @@ const ResultPage6To9 = () => {
                             :
                             <></>
                     }
-
                     <Container>
                         <Grid container className={classes.congrid}>
                             <Grid item >
@@ -216,10 +231,169 @@ const ResultPage6To9 = () => {
                         <Analysis data={data && data}></Analysis>
                     </Container>
                 </Container>
-
             )}
+            <div>
+            {
+                typeOfTest === "One Images Quiz Correct Test"?
+                <ResultPage data={data2} />
+                :
+                ""
+            }
+                
+            </div>
         </Fragment>
+
     )
 }
 
 export default ResultPage6To9
+
+
+
+
+export const ResultPage = ({ data }) => {
+    const useStyle = makeStyles((theme) => ({
+        container: {
+            padding: '150px 0 10px 0'
+        },
+        congrid: {
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        headbutton: {
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            border: 0,
+            borderRadius: 3,
+            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+            color: 'white',
+            height: 48,
+            padding: '0 30px',
+        }
+
+    }))
+    let typeOfTest = localStorage.getItem('typeOfTest')
+    const classes = useStyle()
+    return (
+        <Fragment>
+
+            <Container className={classes.container}>
+                {/* Table result */}
+                <Container>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="caption table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell ><Typography variant='h4'>Area</Typography></TableCell>
+                                    <TableCell align='left' ><Typography variant='h4'>Score</Typography></TableCell>
+                                    <TableCell align='left'><Typography variant='h4'>Maximum Score</Typography></TableCell>
+                                    <TableCell align='left' ><Typography variant='h4'>Grade</Typography></TableCell>
+
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {data.map((e) => (
+                                    <TableRow key={e.section}>
+                                        <TableCell component="th" scope="row">
+                                            <Typography variant='h5'>{e.section}</Typography>
+                                        </TableCell>
+                                        <TableCell ><Typography variant='h5'>{e.totalCount}</Typography></TableCell>
+                                        <TableCell><Typography variant='h5'>{e.totalNoQu}</Typography></TableCell>
+                                        <TableCell ><Typography variant='h5'>{e.grade}</Typography></TableCell>
+
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Container>
+
+
+                <div className="center mb-5 mt-5">
+                    <div className="mx-5 w-100">
+                        <h2>Key to Grades</h2>
+                        <table className="table text-left border text-center">
+                            <thead>
+                                <tr className="score_card">
+                                    <th scope="col">Area</th>
+                                    <th scope="col">Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {
+                                    data.map((e) =>
+                                        <tr>
+                                            {
+                                                e.interpretatio ?
+                                                    <td><Typography variant='h5'>{e.section}</Typography></td>
+                                                    :
+                                                    <></>
+                                            }
+
+                                            {
+                                                e.interpretatio ?
+                                                    Object.entries(e.interpretatio.grade.the_json).map(([k, v]) =>
+                                                        <td><Typography variant='h5'>{`${k} - ${v}`}</Typography></td>
+                                                    ) :
+                                                    <></>
+                                            }
+
+                                        </tr>
+                                    )
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {
+                    typeOfTest === "Mulitpal Quiz Select Test" ? (
+
+                        <Container>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="caption table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell ><Typography variant='h4'>Career and Cluster</Typography></TableCell>
+                                            <TableCell align='left' ><Typography variant='h4'>Section</Typography></TableCell>
+
+                                        </TableRow>
+                                    </TableHead>
+                                    {/* <TableBody>
+                                    {data.map((e) => (
+                                        <TableRow key={e.section}>
+                                            <TableCell component="th" scope="row">
+                                                <Typography variant='h5'>{e.carrer.newCareer}</Typography>
+                                            </TableCell>
+                                            <TableCell ><Typography variant='h5'>{e.section}</Typography></TableCell>
+
+
+                                        </TableRow>
+                                    ))}
+                                </TableBody> */}
+                                </Table>
+                            </TableContainer>
+                        </Container>
+                    )
+                        :
+                        <></>
+                }
+                <Container>
+                    <Grid container className={classes.congrid}>
+                        <Grid item >
+                            <Typography variant='h3' style={{ padding: '30px' }}>Bar Graph Of Your Score</Typography>
+                        </Grid>
+                    </Grid>
+                </Container>
+                <Container>
+                    <Bpp data={data && data} />
+                </Container>
+                <Container >
+                    <Analysis data={data && data}></Analysis>
+                </Container>
+            </Container>
+        </Fragment>
+    )
+}
+

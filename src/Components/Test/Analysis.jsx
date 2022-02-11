@@ -11,6 +11,7 @@ const Analysis = ({ data }) => {
   const [count, setCount] = useState({})
   let typeOfTest = localStorage.getItem('typeOfTest')
   let classSection = localStorage.getItem('classSection')
+  let multipalTest = "Mulitpal Quiz Select Test"
 
   let rows = []
   let rows2 = []
@@ -39,6 +40,7 @@ const Analysis = ({ data }) => {
     }), []);
 
   }
+  
 
 
   data &&
@@ -54,7 +56,7 @@ const Analysis = ({ data }) => {
     rows2.push(rows.slice(0, 3))
   }
 
-  console.log(rows2)
+  // console.log(rows2)
 
 
   const steps = ['Below Average', 'Average', 'High'];
@@ -151,25 +153,28 @@ const Analysis = ({ data }) => {
                   <Grid item style={{ border: '1px solid #96CCFE' }}>
 
                     <div className="d-flex ">
-                      {Object.entries(r.interpretatio.grade.the_json).map(([k, v]) =>
-                        <div className='text-center p-5'>
-                          {
-                            r.grade === k ?
-                              <>
-                                <Typography variant='h5'>{v}</Typography>
-                                <div className={classes.triangle}></div>
-                                <Typography variant='h5'>{k}</Typography>
-                                <Typography variant='h5' className='d-flex center text-danger'>{r.totalCount}</Typography>
-                              </>
-                              :
-                              <>
-                                <Typography variant='h5'>{v}</Typography>
-                                <div className={classes.priangle}></div>
-                                <Typography variant='h5'>{k}</Typography>
-                              </>
-                          }
-                        </div>
-                      )}
+                      {
+                        r.interpretatio && r.interpretatio ?
+                          Object.entries(r.interpretatio.grade.the_json && r.interpretatio.grade.the_json).map(([k, v]) =>
+                            <div className='text-center p-5'>
+                              {
+                                r.grade === k ?
+                                  <>
+                                    <Typography variant='h5'>{v}</Typography>
+                                    <div className={classes.triangle}></div>
+                                    <Typography variant='h5'>{k}</Typography>
+                                    <Typography variant='h5' className='d-flex center text-danger'>{r.totalCount}</Typography>
+                                  </>
+                                  :
+                                  <>
+                                    <Typography variant='h5'>{v}</Typography>
+                                    <div className={classes.priangle}></div>
+                                    <Typography variant='h5'>{k}</Typography>
+                                  </>
+                              }
+                            </div>
+                          ) : ""
+                      }
 
 
                       <Grid item style={{ padding: '10px', borderLeft: '1px  solid #96CCFE' }}>
@@ -183,44 +188,47 @@ const Analysis = ({ data }) => {
 
                 </Grid>
               </Grid>
-              <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography   style={{ fontSize: '19px' }}><b>&nbsp;Score:</b>
-               &nbsp; Your test score in {r.section}  {r.totalCount}  out of {r.totalNoQu}   ({r.grade})</Typography>
+              <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography style={{ fontSize: '19px' }}><b>&nbsp;Score:</b>
+                &nbsp; Your test score in {r.section}  {r.totalCount}  out of {r.totalNoQu}   ({r.grade})</Typography>
               </Grid>
 
+              {
+                multipalTest !== typeOfTest?
+                r.interpretatio && r.interpretatio ?
+                  Object.entries(r.interpretatio.the_title && r.interpretatio.the_title).map(([k, v]) =>
+                    r.grade === k ?
+                      <div>
+                      
+                        <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}> <b>Interpretation:</b> <span>{v}</span></Typography></Grid>
+                        <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
 
+                          <List className='mt-2 mx-1'>
+                            <Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}><b>What you can do / What more you can do:</b>
+                            </Typography>
+                            {
+                              Object.entries(r.interpretatio.the_json && r.interpretatio.the_json).map(([k, v]) =>
+                                r.grade === k ?
 
-
-
-              {Object.entries(r.interpretatio.the_title).map(([k, v]) =>
-                r.grade === k ?
-                  <div>
-
-                    <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}> <b>Interpretation:</b> <span>{v}</span></Typography></Grid>
-                    <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
-
-                      <List className='mt-2 mx-1'>
-                        <Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}><b>What you can do / What more you can do:</b>
-                        </Typography>
-                        {
-
-                          Object.entries(r.interpretatio.the_json).map(([k, v]) =>
-                            r.grade === k ?
-
-                              v.split("<==>").map((p) =>
-                                <ListItem style={{ listStyleType: "circle" }}>
-                                  <Typography variant='h5'>{p}</Typography>
-                                </ListItem>
-                              )
-                              :
-                              <>
-                              </>
-                          )}
-                      </List>
-                    </Grid>
-                  </div>
+                                  v.split("<==>").map((p) =>
+                                    <ListItem style={{ listStyleType: "circle" }}>
+                                      <Typography variant='h5'>{p}</Typography>
+                                    </ListItem>
+                                  )
+                                  :
+                                  <>
+                                  </>
+                              )}
+                          </List>
+                        </Grid>
+                      </div>
+                      :
+                      <></>
+                  )
                   :
-                  <></>
-              )}
+                  ""
+                  :
+                  ""
+              }
 
             </Grid>
           </Grid>

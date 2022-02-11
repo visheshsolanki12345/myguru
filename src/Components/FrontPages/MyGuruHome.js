@@ -6,6 +6,7 @@ import "../css/custom.css";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./myguruhome.css";
+import Header from './Header'
 //mui modal
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -155,7 +156,7 @@ const MyGuruHome = () => {
 
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <div className="ulockd-home-slider mt-4">
         <div className="row">
           <div className="col-12 mt-4">

@@ -13,13 +13,31 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import './login.css'
 
+import { useSelector, useDispatch } from 'react-redux'
+
+import { userRagistration, userLogin } from "../../actions/Authentication/UserAuthenticationAction";
+import { useEffect } from "react";
+
 const Login = () => {
+
+  const { error, user, status, isAuthenticated } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
+
+
+  const history = useHistory();
+  const [loading, setLoading] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordShown, setPasswordShown] = useState(false);
+  const alert = useAlert();
 
   function uuidv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
   }
+
+
 
   const onGoogleLoginFailure = (response) => {
     // console.log(response);
@@ -49,37 +67,23 @@ const Login = () => {
     register(campus, name, email, password)
     setLoading(false)
   }
+  useEffect(() => {
+    if (status === 200) {
+      alert.success("Registeration Successfully done!")
+      history.push('/')
+      return
+    }
+    if (status && status !== 200) {
+      alert.error("Registration not Done!!!")
+      return
+    }
+  }, [dispatch, status, alert, history])
 
   const register = (campus, name, email, password) => {
     let item = { campus, name, email, password }
-    fetch(`${process.env.REACT_APP_API_URL}/api/account/register/`, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(item)
-    }).then((result) => {
-      result.json().then((resp) => {
-        // console.log(resp)
-        if (result.status !== 200) {
-          alert.error(resp.detail)
-        }
-        if (result.status === 200) {
-          localStorage.setItem("user-details", JSON.stringify(resp));
-          history.push("/")
-        }
-      })
-    })
+    dispatch(userRagistration(item))
   }
 
-
-  const history = useHistory();
-  const [loading, setLoading] = useState();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordShown, setPasswordShown] = useState(false);
-  const alert = useAlert();
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -87,35 +91,11 @@ const Login = () => {
 
   dotenv.config()
   const login = () => {
-    let item = { username, password };
-    setLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL}/api/account/login/`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(item),
-    }).then((result) => {
-      // console.log("Result", result.status)
-      if (result.status !== 401) {
-        alert.success("Login Successful!");
-      }
-      result.json().then((resp) => {
-        // console.log(resp)
-        setLoading(false);
-        if (result.status !== 200) {
-          alert.error("User name password incorrect!!!");
-        }
-        if (result.status === 200) {
-          localStorage.setItem("user-details", JSON.stringify(resp));
-          history.push("/");
-          setUsername("");
-          setPassword("");
-        }
-      });
-    });
-  };
+    let item = { username, password }
+    dispatch(userLogin(item))
+  }
+
+  
 
   if (loading) {
     return <Loader />;
@@ -267,31 +247,31 @@ const Login = () => {
                   <Link to="/signup" className="float-left">   password-reset
                     Not Register? Signup Now
                   </Link>
-                  <Link to="/password-reset" className="float-right">   
-                  Forgot Password?
+                  <Link to="/password-reset" className="float-right">
+                    Forgot Password?
                   </Link>
-   
+
                   <div className="clearfix"></div>
-                  <div className="social-buttons" style={{display:'flex',gap:'20px',justifyContent:"space-evenly"}}>
+                  <div className="social-buttons" style={{ display: 'flex', gap: '20px', justifyContent: "space-evenly" }}>
 
                     <div >
-                    <FacebookLogin
-                      appId="2739846806322407"
-                      autoLoad={false}
-                      fields="name,email,picture"
-                      scope="public_profile,user_friends"
-                      callback={responseFacebook}
-                      cssClass="my-facebook-button-class"
-                      icon={<FaFacebookF/>} />
+                      <FacebookLogin
+                        appId="2739846806322407"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        scope="public_profile,user_friends"
+                        callback={responseFacebook}
+                        cssClass="my-facebook-button-class"
+                        icon={<FaFacebookF />} />
                     </div>
                     <div>
-                    <GoogleLogin
-                      // clientId="550540451855-qbl4rikdvcm8dh5qc1f2qvkoqcu66rts.apps.googleusercontent.com" // local host clind id
-                      clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com" // deploye clind id
-                      buttonText="Google"
-                      onSuccess={onGoogleLoginSuccess}
-                      onFailure={onGoogleLoginFailure} 
-                    />
+                      <GoogleLogin
+                        // clientId="550540451855-qbl4rikdvcm8dh5qc1f2qvkoqcu66rts.apps.googleusercontent.com" // local host clind id
+                        clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com" // deploye clind id
+                        buttonText="Google"
+                        onSuccess={onGoogleLoginSuccess}
+                        onFailure={onGoogleLoginFailure}
+                      />
                     </div>
                   </div>
                 </div>

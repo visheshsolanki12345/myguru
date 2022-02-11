@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,7 +6,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { getTest } from "../../actions/Test/TestAction";
+import { getTest } from "../../../actions/Test/TestAction";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -31,6 +30,10 @@ import { Link, useHistory } from "react-router-dom";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import ModeEditOutlineOutlined from "@mui/icons-material/ModeEditOutlineOutlined";
 import GridViewIcon from "@mui/icons-material/GridView";
+import { useSelector, useDispatch } from 'react-redux'
+import { getAllStudentData } from "../../../actions/StudentDashBoard/GetAllStudentDataAction";
+
+
 const drawerWidth = 240;
 const useStyles = makeStyles({
   item: {
@@ -43,6 +46,9 @@ const useStyles = makeStyles({
     background: "black",
   },
 });
+
+
+
 
 function ResponsiveDrawer(props) {
   const classes = useStyles();
@@ -148,7 +154,7 @@ function ResponsiveDrawer(props) {
   const history = useHistory();
   let user = JSON.parse(localStorage.getItem("user-details"));
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData();
     getDataPay();
     removeLocal();
@@ -192,7 +198,7 @@ function ResponsiveDrawer(props) {
     dispatch(getTest(item));
     history.push("./paymentsummery");
   };
-  
+
   const classFuncPay = (id) => {
     // removeLocal();
     let item = { id };
@@ -201,6 +207,10 @@ function ResponsiveDrawer(props) {
     dispatch(getTest(item));
     history.push("./paymentsummery");
   };
+
+  useEffect(() => {
+    dispatch(getAllStudentData())
+  }, [dispatch])
 
   return (
     <>

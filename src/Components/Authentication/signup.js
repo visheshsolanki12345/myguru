@@ -11,15 +11,18 @@ import { FaFacebookF } from "react-icons/fa";
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import './login.css'
+import { useSelector, useDispatch } from 'react-redux'
+import { userRagistration } from '../../actions/Authentication/UserAuthenticationAction'
 
 // import process.env.R from 'react-dotprocess.env.R'
 
 
 const Signup = () => {
-
+    const { error, user, status, isAuthenticated } = useSelector((state) => state.user);
     //============================================== Hooks & Variables ===================================================//
+    const dispatch = useDispatch()
     const history = useHistory();
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(false)
     const [campus, setCampus] = useState("")
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -67,32 +70,23 @@ const Signup = () => {
 
     const registerSocail = (campus, name, email, password) => {
         let item = { campus, name, email, password }
-        fetch(`${process.env.REACT_APP_API_URL}/api/account/register/`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(item)
-        }).then((result) => {
-            result.json().then((resp) => {
-                // console.log(resp)
-                if (result.status !== 200) {
-                    alert.error(resp.detail)
-                }
-                if (result.status === 200) {
-                    localStorage.setItem("user-details", JSON.stringify(resp));
-                    history.push("/")
-                }
-            })
-        })
+        dispatch(userRagistration(item))
     }
 
 
     //============================================== UseEffect ===================================================//
     useEffect(() => {
-        setLoading(false)
-    }, [])
+        if(status === 200){
+            alert.success("Registeration Successfully done!")
+            history.push('/')
+            return
+        } 
+        if(status && status !== 200){
+            alert.error("Registration not Done!!!")
+            return
+        } 
+    }, [dispatch, status, alert, history])
+
 
     //========================================= Show Password Toggle Buttons Fuction ===================================================//
     const togglePassword = () => {
@@ -102,48 +96,24 @@ const Signup = () => {
         setPasswordShown2(!passwordShown2);
     };
 
-    //============================================== Register Function ===================================================//
+
     const register = () => {
         let item = { campus, name, email, password }
         if (password.length < 8 || confirmPassword.length < 8) {
-            // return alert.error("Password should be 8 digit!")
             return alert.error("Password should be 8 digit!")
         }
         if (password !== confirmPassword) {
             return alert.error("Password did not Match!")
         }
-        setLoading(true)
-        fetch(`${process.env.REACT_APP_API_URL}/api/account/register/`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(item)
-        }).then((result) => {
-            // console.log("Result", result.status)
-            if (result.status !== 400) {
-                alert.success("Registration Successfully!")
-                setLoading(false)
-            }
-            result.json().then((resp) => {
-                // console.log(resp)
-                setLoading(false)
-                if (result.status !== 200) {
-                    alert.error(resp.detail)
-                }
-                if (result.status === 200) {
-                    localStorage.setItem("user-details", JSON.stringify(resp));
-                    history.push("/")
-                    setCampus("")
-                    setName("")
-                    setEmail("")
-                    setPassword("")
-                    setConfirmPassword("")
-                }
-            })
-        })
+        dispatch(userRagistration(item))
+        setCampus("")
+        setName("")
+        setEmail("")
+        setPassword("")
+        setConfirmPassword("")
     }
+
+
     //=================================================== Loader ===================================================//
     if (loading) {
         return <Loader />
@@ -207,26 +177,26 @@ const Signup = () => {
                                     <div className="social-buttons">
                                         <b>Or You can Signup with</b>
                                         <div   >
-                                <div style={{padding:'5px'}}>
-                                      <FacebookLogin
-                                            appId="2739846806322407"
-                                            autoLoad={false}
-                                            fields="name,email,picture"
-                                            scope="public_profile,user_friends"
-                                            callback={responseFacebook}
-                                            cssClass="my-facebook-button-class"
-                                            icon={<FaFacebookF />} />
-                                      </div>
+                                            <div style={{ padding: '5px' }}>
+                                                <FacebookLogin
+                                                    appId="2739846806322407"
+                                                    autoLoad={false}
+                                                    fields="name,email,picture"
+                                                    scope="public_profile,user_friends"
+                                                    callback={responseFacebook}
+                                                    cssClass="my-facebook-button-class"
+                                                    icon={<FaFacebookF />} />
+                                            </div>
 
-                                     <div style={{padding:'5px'}}>
-                                     <GoogleLogin
-                                            // clientId="550540451855-qbl4rikdvcm8dh5qc1f2qvkoqcu66rts.apps.googleusercontent.com" // local host clind id
-                                            clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com" // deploye clind id
-                                            buttonText="Google"
-                                            onSuccess={onGoogleLoginSuccess}
-                                            onFailure={onGoogleLoginFailure}
-                                        />
-                                     </div>
+                                            <div style={{ padding: '5px' }}>
+                                                <GoogleLogin
+                                                    // clientId="550540451855-qbl4rikdvcm8dh5qc1f2qvkoqcu66rts.apps.googleusercontent.com" // local host clind id
+                                                    clientId="357478272810-6otro27noaikntroie2t7fv1220062nu.apps.googleusercontent.com" // deploye clind id
+                                                    buttonText="Google"
+                                                    onSuccess={onGoogleLoginSuccess}
+                                                    onFailure={onGoogleLoginFailure}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
