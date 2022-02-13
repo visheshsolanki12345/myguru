@@ -13,6 +13,7 @@ import Carousel from "react-material-ui-carousel";
 // import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
+import { Rating } from "@material-ui/lab";
 
 import { Link, useHistory } from 'react-router-dom';
 import { timeSince } from '../CommanFunction/time'
@@ -93,7 +94,14 @@ const Careerpagebottom8 = ({ data }) => {
                             <div>
                               <Grid container justify='space-between'>
                                 <Grid item lg={6}><span style={{ color: 'black', fontSize: '15px' }}>Views : </span> <span style={{ color: 'green', fontSize: '15px' }}>{e.noView} </span>  </Grid>
-                                <Grid item lg={6}> <span style={{ color: 'black', fontSize: '15px' }}>Rating : </span> <span style={{ color: 'green', fontSize: '15px' }}>{e.rating} </span> </Grid>
+                                <Grid item lg={6}> <span style={{ color: 'black', fontSize: '15px' }}>
+                                <Rating 
+                                value={e.rating}
+                                readOnly= {true}
+                                precision = {0.5}
+                                />
+                                
+                                 </span>{e.rating} </Grid>
                               </Grid>
                               <Grid container justify='space-between'>
                                 <Grid item lg={6}>

@@ -10,10 +10,12 @@ import { Button, Container, Grid, Paper, TableBody, TableCell, TableContainer, T
 import { makeStyles } from '@material-ui/styles';
 import Analysis from './Analysis';
 import { useHistory } from 'react-router-dom'
-
+import axios from 'axios'
+import Divider from '@mui/material/Divider';
 
 
 const ResultPage6To9 = () => {
+
 
     //mui styles
     const useStyle = makeStyles((theme) => ({
@@ -39,6 +41,7 @@ const ResultPage6To9 = () => {
     const classes = useStyle()
     const [data, setData] = useState([])
     const [data2, setData2] = useState([])
+    const [carrerData, setCarrerData] = useState([])
     const [loading, setLoading] = useState(true)
     const alert = useAlert()
     const history = useHistory()
@@ -63,6 +66,10 @@ const ResultPage6To9 = () => {
             let item = { id, classSection }
             dispatch(getTest(item));
         }
+        if (localStorage.getItem('typeOfTest') === "Mulitpal Quiz Select Test"){
+            carrer_get()
+        }
+        
         getResult()
     }, [dispatch])
 
@@ -78,10 +85,10 @@ const ResultPage6To9 = () => {
             body: JSON.stringify(item),
         }).then((result) => {
             result.json().then((resp) => {
-                if(typeOfTest == "One Images Quiz Correct Test"){
+                if (typeOfTest == "One Images Quiz Correct Test") {
                     setData(resp[1])
                     setData2(resp[0])
-                } else{
+                } else {
                     setData(resp)
                 }
                 if (resp === 404) {
@@ -93,14 +100,27 @@ const ResultPage6To9 = () => {
         })
     }
 
-
+    const carrer_get = async () => {
+        await fetch(`${process.env.REACT_APP_API_URL}/api/carrer-description/`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                // Authorization: `Bearer ${user && user.access}`,
+            },
+        }).then((result) => {
+            result.json().then((resp) => {
+                setCarrerData(resp)
+            });
+        });
+    };
+    // console.log(carrerData)
 
     return (
         <Fragment>
             {loading ? (
                 <Loader />
             ) : (
-
                 <Container className={classes.container}>
                     <Container>
                         <Grid container className={classes.congrid}>
@@ -115,8 +135,40 @@ const ResultPage6To9 = () => {
                             </Grid>
                         </Grid>
                     </Container>
+
+
+                    {/* career cluster description */}
+                {
+                    typeOfTest === "Mulitpal Quiz Select Test" ?
+                    <Container style={{ marginTop: '30px' }}>
+                        <h1 style={{ textAlign: 'center' }}>General Information about various Career Clusters:</h1>
+                        {carrerData && carrerData.map((c, i) =>
+                            <>
+                                <Grid container style={{ paddingTop: '20px' }}>
+                                    <Grid align='left' justify='left' item lg={12}>
+                                        <Typography variant='h4'>
+                                            {i + 1}.  {c.section.section}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid align='left' justify='left' item lg={12}>
+                                        <Typography variant='h5' >
+                                            {c.description}
+                                        </Typography>
+
+                                    </Grid>
+                                </Grid>
+                                <Divider />
+                            </>
+                        )}
+                    </Container>
+                    :
+                    ""
+                }
+
+
                     {/* Table result */}
-                    <Container>
+
+                    <Container style={{ paddingTop: '40px' }}>
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="caption table">
                                 <TableHead>
@@ -228,18 +280,18 @@ const ResultPage6To9 = () => {
                         <Bpp data={data && data} />
                     </Container>
                     <Container >
-                        <Analysis data={data && data}></Analysis>
+                        <Analysis data={data && data} carrerData={carrerData && carrerData}></Analysis>
                     </Container>
                 </Container>
             )}
             <div>
-            {
-                typeOfTest === "One Images Quiz Correct Test"?
-                <ResultPage data={data2} />
-                :
-                ""
-            }
-                
+                {
+                    typeOfTest === "One Images Quiz Correct Test" ?
+                        <ResultPage data={data2} />
+                        :
+                        ""
+                }
+
             </div>
         </Fragment>
 

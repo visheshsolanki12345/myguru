@@ -4,9 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getTest } from '../../actions/Test/TestAction';
 import Piechart from './PieChar';
+import  Divider  from '@mui/material/Divider';
 
 
-const Analysis = ({ data }) => {
+
+const Analysis = ({ data, carrerData }) => {
 
   const [count, setCount] = useState({})
   let typeOfTest = localStorage.getItem('typeOfTest')
@@ -40,7 +42,7 @@ const Analysis = ({ data }) => {
     }), []);
 
   }
-  
+
 
 
   data &&
@@ -50,13 +52,25 @@ const Analysis = ({ data }) => {
   findLargest3();
 
 
+  let filterArray = []
+
   function findLargest3() {
     rows && rows.sort((a, b) => a < b ? 1 : a > b ? -1 : 0);
-
+    let uniqueArray = [...new Set(rows)];
+    rows = Array.from(uniqueArray);
     rows2.push(rows.slice(0, 3))
   }
 
-  // console.log(rows2)
+  const filterSection = (p) => {
+    return carrerData && carrerData.filter((e) => e.section.section === p)
+  }
+
+  // const topThreeMap = () => {
+  //   rows2 && rows2[0].map((r) => filterTopThree(r))
+  // }
+  // topThreeMap()
+  // console.log(filterArray)
+
 
 
   const steps = ['Below Average', 'Average', 'High'];
@@ -193,39 +207,39 @@ const Analysis = ({ data }) => {
               </Grid>
 
               {
-                multipalTest !== typeOfTest?
-                r.interpretatio && r.interpretatio ?
-                  Object.entries(r.interpretatio.the_title && r.interpretatio.the_title).map(([k, v]) =>
-                    r.grade === k ?
-                      <div>
-                      
-                        <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}> <b>Interpretation:</b> <span>{v}</span></Typography></Grid>
-                        <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
+                multipalTest !== typeOfTest ?
+                  r.interpretatio && r.interpretatio ?
+                    Object.entries(r.interpretatio.the_title && r.interpretatio.the_title).map(([k, v]) =>
+                      r.grade === k ?
+                        <div>
 
-                          <List className='mt-2 mx-1'>
-                            <Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}><b>What you can do / What more you can do:</b>
-                            </Typography>
-                            {
-                              Object.entries(r.interpretatio.the_json && r.interpretatio.the_json).map(([k, v]) =>
-                                r.grade === k ?
+                          <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}><Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}> <b>Interpretation:</b> <span>{v}</span></Typography></Grid>
+                          <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
 
-                                  v.split("<==>").map((p) =>
-                                    <ListItem style={{ listStyleType: "circle" }}>
-                                      <Typography variant='h5'>{p}</Typography>
-                                    </ListItem>
-                                  )
-                                  :
-                                  <>
-                                  </>
-                              )}
-                          </List>
-                        </Grid>
-                      </div>
-                      :
-                      <></>
-                  )
-                  :
-                  ""
+                            <List className='mt-2 mx-1'>
+                              <Typography className='d-flex row' align='left' style={{ fontSize: '19px' }}><b>What you can do / What more you can do:</b>
+                              </Typography>
+                              {
+                                Object.entries(r.interpretatio.the_json && r.interpretatio.the_json).map(([k, v]) =>
+                                  r.grade === k ?
+
+                                    v.split("<==>").map((p) =>
+                                      <ListItem style={{ listStyleType: "circle" }}>
+                                        <Typography variant='h5'>{p}</Typography>
+                                      </ListItem>
+                                    )
+                                    :
+                                    <>
+                                    </>
+                                )}
+                            </List>
+                          </Grid>
+                        </div>
+                        :
+                        <></>
+                    )
+                    :
+                    ""
                   :
                   ""
               }
@@ -241,14 +255,18 @@ const Analysis = ({ data }) => {
           </Typography>
           {
             typeOfTest === "Mulitpal Quiz Select Test" &&
-
             data && data.map((k, i) =>
               rows2 && rows2.map((r) =>
                 r.map((p) =>
                   p === k.totalCount ?
                     <>
-                      <ListItem style={{ fontSize: '15px' }}>{i + 1}. {k.section} ({k.totalCount}-{k.grade})</ListItem>
-
+                      <ListItem style={{ fontSize: '15px' }}>
+                       <Typography variant='h4' > {i + 1}. {k.section} ({k.totalCount}-{k.grade})</Typography>
+                      </ListItem>
+                      <Typography variant='h5' style={{marginLeft:'12px'}} align='left'>
+                      {filterSection(k.section)[0].description}
+                      </Typography>
+                      <Divider/>
                     </>
                     :
                     ""

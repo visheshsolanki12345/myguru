@@ -12,6 +12,7 @@ import { timeSince } from '../../CommanFunction/time'
 import { getCarrerFunc } from '../../../actions/carrer/user/CarrerAction';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Rating from "@material-ui/lab/Rating";
 
 const VideoPageViewAll = () => {
     const { loading, error, video, videoPageCount, videoTotalPagesCount } = useSelector((state) => state.video);
@@ -134,6 +135,11 @@ const VideoPageViewAll = () => {
                                             </Grid>
                                             <Grid item lg={1}>
                                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <Rating 
+                                value={e.rating}
+                                readOnly= {true}
+                                precision = {0.5}
+                                />
                                                     <span style={{ fontSize: '13px', fontWeight: "400", color: 'black' }}>      Rating: {e.rating} </span>
                                                     <span style={{ fontSize: '13px', fontWeight: "400", color: 'black' }}>      Views: {e.noView} </span>
                                                     <Typography variant='h5'></Typography>
