@@ -34,6 +34,8 @@ import ArticleSinglePage from './Components/CareerPage/CareerPageViewAll/Article
 // Video page
 import VideoPageViewAll from './Components/CareerPage/CareerPageViewAll/VideoPageViewAll'
 import VideoSinglePage from './Components/CareerPage/CareerPageViewAll/VideoSinglePage'
+import VideoTrending from './Components/CareerPage/CareerPageViewAll/VideoTrending';
+
 
 // Counsellor page
 import CounsellorPageViewAll from './Components/CareerPage/CareerPageViewAll/CounsellorPageViewAll';
@@ -66,6 +68,7 @@ function App() {
 
                     <Prodected exact path="/video-page/" component={VideoPageViewAll} />
                     <Prodected exact path="/video-page/:id" component={VideoSinglePage} />
+                    <Prodected exact path="/trending-video" component={VideoTrending} />
 
                     <Prodected exact path="/counsellor-page/" component={CounsellorPageViewAll} />
                     <Prodected exact path="/counsellor-page/:id" component={CounsellorSinglePage} />

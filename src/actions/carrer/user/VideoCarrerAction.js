@@ -55,6 +55,7 @@ export const getVideoFunc = (currentPage, carrerId) => async (dispatch) => {
 }
 
 
+
 export const getVideoSingleFunc = (id) => async (dispatch) => {
     try {
         dispatch({ type: SINGLE_VIDEO_REQUEST })
