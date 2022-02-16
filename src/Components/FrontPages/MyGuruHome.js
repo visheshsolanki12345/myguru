@@ -20,6 +20,7 @@ import { BsCameraVideoFill } from "react-icons/bs";
 import { GrWorkshop } from "react-icons/gr";
 import { BsMapFill } from "react-icons/bs";
 import { FaTeamspeak } from "react-icons/fa";
+
 //mui modal style
 const style = {
   position: "relative",
@@ -52,6 +53,7 @@ const MyGuruHome = () => {
   };
 
   //mui modal state
+
   const [open, setOpen] = React.useState(false);
   const [main, setMain] = useState(false);
   const [openSection, setOpenSection] = React.useState(false);
@@ -72,6 +74,10 @@ const MyGuruHome = () => {
     localStorage.setItem("classSection", id);
     history.push("./paymentsummery");
   };
+
+  const videoPage = () => {
+    history.push('./trending-video')
+  }
 
   const handleSectionClose = () => setOpenSection(false);
   //mui modal state
@@ -267,14 +273,15 @@ const MyGuruHome = () => {
               <div className="row">
                 <div className="col-sm-6 text-center">
                   {/* <!--<a data-toggle="modal" href="#myModal2" className="btn btn-primary">Launch modal</a>--> */}
-                  <a
-                    href="/guruexpert"
-                    className="btn btn-lg btn-success square-button"
-                  >
-                    <i className="fa fa-video-camera" aria-hidden="true"></i>
-                    <br />
-                    Videos
-                  </a>
+                  <Button onClick={() => videoPage()}>
+                    <a
+                      className="btn btn-lg btn-success square-button"
+                    >
+                      <i className="fa fa-video-camera" aria-hidden="true"></i>
+                      <br />
+                      Videos
+                    </a>
+                  </Button>
                 </div>
                 <div className="col-sm-6 text-center">
                   <a className="btn btn-lg btn-warning square-button">

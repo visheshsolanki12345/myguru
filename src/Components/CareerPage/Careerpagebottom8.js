@@ -68,7 +68,7 @@ const Careerpagebottom8 = ({ data }) => {
               Featured Article Video
             </div>
 
-            <div className="careerpagebottom8_featurearticle_viewall" onClick={() => history.push('/video-page')}>
+            <div className="careerpagebottom8_featurearticle_viewall" onClick={() => history.push('/trending-video')}>
               View All <FaAngleRight />
             </div>
           </div>
@@ -145,8 +145,6 @@ const Careerpagebottom8 = ({ data }) => {
 
           {/* list of career bottom part */}
           <div style={{ padding: "20px" }}>
-
-
             <Carousel
               swipeable={false}
               draggable={false}
