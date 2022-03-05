@@ -7,7 +7,6 @@ import Piechart from './PieChar';
 import Divider from '@mui/material/Divider';
 
 
-
 const Analysis = ({ data, carrerData }) => {
 
   const [count, setCount] = useState({})
@@ -98,7 +97,7 @@ const Analysis = ({ data, carrerData }) => {
       [theme.breakpoints.down('md')]: {
         borderLeft: '20px solid transparent',
         borderRight: '20px solid transparent',
-        borderBottom: '40px solid  #5aff15',
+        borderBottom: '40px solid  #5555',
       }
     },
     cont: {
@@ -140,7 +139,6 @@ const Analysis = ({ data, carrerData }) => {
   };
   return (
     <>
-
       {data && data.map((r, i) => {
         return <div style={{ padding: '40px' }}>
           <Grid container className={classes.cont} style={{ border: '1px solid #96CCFE' }}>
@@ -280,9 +278,6 @@ const Analysis = ({ data, carrerData }) => {
           :
           ""
       }
-
-
-
     </>
   )
 }

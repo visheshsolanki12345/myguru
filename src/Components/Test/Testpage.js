@@ -306,12 +306,13 @@ const Testpage = () => {
     return <Loader />
   }
 
+  // test && test.data.sort(dynamicSort("Name"));
   return (
     <>
       {
         typeOfTest === imageTest ?
           (
-            <ImageQuiz test={test && test} />
+            <ImageQuiz />
           ) : (<>
             <Container className={classes.container}>
               <Grid container>

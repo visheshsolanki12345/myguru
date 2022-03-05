@@ -12,6 +12,7 @@ import Analysis from './Analysis';
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Divider from '@mui/material/Divider';
+import SideBarChart from './TypeOfTest/SideBarChart';
 
 
 const ResultPage6To9 = () => {
@@ -116,6 +117,14 @@ const ResultPage6To9 = () => {
     };
     // console.log(carrerData)
 
+    let array = [] 
+    let arrayy = [] 
+    data2 &&
+    data2.forEach((e, index) => {
+        array.push(e.totalCount);
+        arrayy.push(e.section);
+    });
+
     return (
         <Fragment>
             {loading ? (
@@ -126,17 +135,17 @@ const ResultPage6To9 = () => {
                         <Grid container className={classes.congrid}>
                             <Grid item lg={10} >
                                 <Button className={classes.headbutton}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>{test.discreption && test.discreption.map((e) => e.resultTitle.mainHeading)} </Typography></Button>
-                               
+
                             </Grid>
                             <Grid item lg={2} >
-                         
-                            <Button className={classes.headbutton} onClick={() => window.print()}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>Print</Typography></Button>
+
+                                <Button className={classes.headbutton} onClick={() => window.print()}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>Print</Typography></Button>
                             </Grid>
                         </Grid>
                         <Grid container className={classes.congrid}>
                             <Grid item >
-                                <Typography variant='h5' style={{ padding: '10px' }}>{resultTitle}</Typography>
-                                <Typography variant='h5' style={{ padding: '10px' }}>{discription}</Typography>
+                                <Typography variant='h4' style={{ padding: '10px' }}>{resultTitle}</Typography>
+                                <Typography style={{ padding: '10px', textAlign: 'left', fontSize: '19px' }}>{discription}</Typography>
                             </Grid>
                         </Grid>
                     </Container>
@@ -154,14 +163,13 @@ const ResultPage6To9 = () => {
                                         <Grid container style={{ paddingTop: '20px' }}>
                                             {
                                                 Object.entries(e.resultTitle.the_json).map(([k, v]) =>
-                                                    <div>
-                                                        <h1>{k}</h1>
-                                                        <h1>{v}</h1>
+                                                    <div style={{ textAlign: 'left', padding: '10px' }}>
+                                                        <Typography variant='h4'>{k}: <Typography variant='h5'>{v}</Typography></Typography>
+                                                        <Divider />
                                                     </div>
                                                 )
                                             }
                                         </Grid>
-                                        <Divider />
                                     </>
                                 )}
                             </Container>
@@ -176,9 +184,9 @@ const ResultPage6To9 = () => {
                                 <h1 style={{ textAlign: 'center' }}>IMPORTANCE OF CAREER CLUSTER INTEREST ASSESSMENT</h1>
                                 {
                                     test.discreption && test.discreption.map((e) =>
-                                        <h1>
+                                        <Typography style={{ textAlign: 'left', fontSize: '19px' }} >
                                             {e.resultTitle.discription}
-                                        </h1>
+                                        </Typography>
                                     )
                                 }
                             </Container>
@@ -190,38 +198,33 @@ const ResultPage6To9 = () => {
                     {/* Table result */}
 
                     <Container style={{ paddingTop: '40px' }}>
-                        <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell ><Typography variant='h4'>Area</Typography></TableCell>
-                                        <TableCell align='left' ><Typography variant='h4'>Score</Typography></TableCell>
-                                        <TableCell align='left'><Typography variant='h4'>Maximum Score</Typography></TableCell>
-                                        <TableCell align='left' ><Typography variant='h4'>Grade</Typography></TableCell>
-
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {data.map((e) => (
-                                        <TableRow key={e.section}>
-                                            <TableCell component="th" scope="row">
-                                                <Typography variant='h5'>{e.section}</Typography>
-                                            </TableCell>
-                                            <TableCell ><Typography variant='h5'>{e.totalCount}</Typography></TableCell>
-                                            <TableCell><Typography variant='h5'>{e.totalNoQu}</Typography></TableCell>
-                                            <TableCell ><Typography variant='h5'>{e.grade}</Typography></TableCell>
-
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><Typography variant='h5'>Area</Typography></th>
+                                    <th scope="col"><Typography variant='h5'>Score</Typography></th>
+                                    <th scope="col"><Typography variant='h5'>Maximum Score</Typography></th>
+                                    <th scope="col"><Typography variant='h5'>Grade</Typography></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map((e) =>
+                                    <tr>
+                                        <td><Typography variant='h5'>{e.section}</Typography></td>
+                                        <td><Typography variant='h5'>{e.totalCount}</Typography></td>
+                                        <td><Typography variant='h5'>{e.totalNoQu}</Typography></td>
+                                        <td><Typography variant='h5'>{e.grade}</Typography></td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </Container>
 
 
                     <div className="center mb-5 mt-5">
                         <div className="mx-5 w-100">
                             <h2>Key to Grades</h2>
+
                             <table className="table text-left border text-center">
                                 <thead>
                                     <tr className="score_card">
@@ -308,7 +311,7 @@ const ResultPage6To9 = () => {
             <div>
                 {
                     typeOfTest === "One Images Quiz Correct Test" ?
-                        <ResultPage data={data2} />
+                        <ResultPage data={data2} array={array && array} arrayy={arrayy && arrayy} />
                         :
                         ""
                 }
@@ -324,7 +327,7 @@ export default ResultPage6To9
 
 
 
-export const ResultPage = ({ data }) => {
+export const ResultPage = ({ data, array, arrayy }) => {
     const useStyle = makeStyles((theme) => ({
         container: {
             padding: '150px 0 10px 0'
@@ -346,38 +349,37 @@ export const ResultPage = ({ data }) => {
     }))
     let typeOfTest = localStorage.getItem('typeOfTest')
     const classes = useStyle()
+    
+
     return (
         <Fragment>
-
             <Container className={classes.container}>
                 {/* Table result */}
+                <div>
+                    <h1 style={{ textAlign: 'center' }}>IMPORTANCE OF INTEREST INVENTORY</h1>
+                    <Typography style={{ textAlign: 'left', fontSize: "19px" }}>The interest inventories are designed to help into areas where you are likely to find the greatest job satisfaction. It is not a measure of general or specific abilities, including intelligence. Such traits are related to a person performance on the job than to their satisfaction on the job. These factors or traits like aptitude, abilities, intelligence and personality should be determined by other means and should be considered alongwith the interest scores.</Typography>
+                </div>
                 <Container>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell ><Typography variant='h4'>Area</Typography></TableCell>
-                                    <TableCell align='left' ><Typography variant='h4'>Score</Typography></TableCell>
-                                    <TableCell align='left'><Typography variant='h4'>Maximum Score</Typography></TableCell>
-                                    <TableCell align='left' ><Typography variant='h4'>Grade</Typography></TableCell>
-
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {data.map((e) => (
-                                    <TableRow key={e.section}>
-                                        <TableCell component="th" scope="row">
-                                            <Typography variant='h5'>{e.section}</Typography>
-                                        </TableCell>
-                                        <TableCell ><Typography variant='h5'>{e.totalCount}</Typography></TableCell>
-                                        <TableCell><Typography variant='h5'>{e.totalNoQu}</Typography></TableCell>
-                                        <TableCell ><Typography variant='h5'>{e.grade}</Typography></TableCell>
-
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col"><Typography variant='h5'>Area</Typography></th>
+                                <th scope="col"><Typography variant='h5'>Score</Typography></th>
+                                <th scope="col"><Typography variant='h5'>Maximum Score</Typography></th>
+                                <th scope="col"><Typography variant='h5'>Grade</Typography></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((e) =>
+                                <tr>
+                                    <td><Typography variant='h5'>{e.section}</Typography></td>
+                                    <td><Typography variant='h5'>{e.totalCount}</Typography></td>
+                                    <td><Typography variant='h5'>{e.totalNoQu}</Typography></td>
+                                    <td><Typography variant='h5'>{e.grade}</Typography></td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </Container>
 
 
@@ -420,38 +422,6 @@ export const ResultPage = ({ data }) => {
                     </div>
                 </div>
 
-                {
-                    typeOfTest === "Mulitpal Quiz Select Test" ? (
-
-                        <Container>
-                            <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell ><Typography variant='h4'>Career and Cluster</Typography></TableCell>
-                                            <TableCell align='left' ><Typography variant='h4'>Section</Typography></TableCell>
-
-                                        </TableRow>
-                                    </TableHead>
-                                    {/* <TableBody>
-                                    {data.map((e) => (
-                                        <TableRow key={e.section}>
-                                            <TableCell component="th" scope="row">
-                                                <Typography variant='h5'>{e.carrer.newCareer}</Typography>
-                                            </TableCell>
-                                            <TableCell ><Typography variant='h5'>{e.section}</Typography></TableCell>
-
-
-                                        </TableRow>
-                                    ))}
-                                </TableBody> */}
-                                </Table>
-                            </TableContainer>
-                        </Container>
-                    )
-                        :
-                        <></>
-                }
                 <Container>
                     <Grid container className={classes.congrid}>
                         <Grid item >
@@ -460,7 +430,7 @@ export const ResultPage = ({ data }) => {
                     </Grid>
                 </Container>
                 <Container>
-                    <Bpp data={data && data} />
+                    <SideBarChart arrayOne={array} arrayTwo={arrayy} />
                 </Container>
                 <Container >
                     <Analysis data={data && data}></Analysis>

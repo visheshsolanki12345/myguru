@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAlert } from 'react-alert'
 import { Link, useHistory } from 'react-router-dom'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Button, Container, Divider, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Radio from '@mui/material/Radio';
@@ -13,8 +13,8 @@ import { getTest } from "../../../actions/Test/TestAction";
 import '../triangle.css'
 import axios from 'axios'
 
-const ImageQuiz1 = ({ test }) => {
-
+const ImageQuiz1 = () => {
+    const { test } = useSelector((state) => state.test)
     const [minutes, setMinutes] = useState()
     const [seconds, setSeconds] = useState(0);
     const [sect, setSect] = useState(0);
@@ -30,14 +30,14 @@ const ImageQuiz1 = ({ test }) => {
 
 
     let sectionABC = JSON.parse(localStorage.getItem("array"))
-    
+
 
     const getInterestSec = async () => {
         const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/interest-sections/`)
         localStorage.setItem("array", JSON.stringify(data && data.map((e) => e.sectionInterest)));
         // setSectionABC(propertyValues)
     }
-    
+
 
     const findAbc = (abc) => {
         if (sectionABC.find((e) => e === abc)) {
@@ -91,7 +91,6 @@ const ImageQuiz1 = ({ test }) => {
                     setMinutes(backupFilter[0].section.duration)
 
                     if (arrs && sect < arrs.length - 1) {
-
                         setSect(sect + 1)
                     }
                 } else {
@@ -271,12 +270,7 @@ const ImageQuiz1 = ({ test }) => {
         }
     }
 
-    const handleSect = (a, index) => {
-        console.log('section', a)
-        console.log('index', index)
-        const lastTime = `${minutes}-${seconds}`
-        const section = arrs[sect]
-        let item = { lastTime, section }
+    function lastTimePost(item) {
         fetch(`${process.env.REACT_APP_API_URL}/api/last-time/`, {
             method: "POST",
             headers: {
@@ -287,84 +281,90 @@ const ImageQuiz1 = ({ test }) => {
             body: JSON.stringify(item),
         }).then((result) => {
             result.json().then((resp) => {
-                let firstTime = test.data && test.data.filter((e) => e.section.section === a)
-                setQuestionLen(firstTime.length)
-                setSectionWiseTime(firstTime[0].section.duration)
-                getBackup()
-                setSect(index)
-                window.scrollTo(0, 0)
-                if (backup.length !== 0) {
-                    let check = findAbc(a)
-                    if (check == true) {
-                        filterMap()
-                        filterMapSection()
-                        let resp = filterSectionAbc[0]
-                        setQuestionLen(([].concat.apply([], filterSectionAbcforSection).length))
-                        setSectionWiseTime(timeArray[0])
-                        if (filterSectionAbc.length !== 0) {
-                            if (localStorage.getItem('timeing') == '1') {
-                                return
-                            } else {
-                                if (resp[resp.length - 1].lastTime.split("-")[1] === '0') {
-                                    setSeconds(1)
-                                } else {
-                                    setSeconds(resp[resp.length - 1].lastTime.split("-")[1])
-                                }
-                                setMinutes(resp[resp.length - 1].lastTime.split("-")[0])
-                                localStorage.setItem('timeing', '1')
-                                return
-                            }
-                        }
-                    }
-
-                    if (backup && backup.find((p) => p.imageOneQuizeCorrect.section.section === a)) {
-                        let check = findAbc(a)
-                        if (check === false) {
-                            let resp = backup && backup.filter((p) => p.imageOneQuizeCorrect.section.section === a)
-
-                            if (resp[resp.length - 1].lastTime.split("-")[1] === '0') {
-                                setSeconds(1)
-                            } else {
-                                setSeconds(resp[resp.length - 1].lastTime.split("-")[1])
-                            }
-                            setMinutes(resp[resp.length - 1].lastTime.split("-")[0])
-                            localStorage.removeItem("timeing")
-                        } else {
-                            setSeconds(0)
-                            setMinutes(timeArray[0])
-                            filterMap()
-                            console.log(filterSectionAbc)
-                            setQuestionLen(filterSectionAbc[0].length)
-                            localStorage.setItem('timeing', '1')
-                        }
-
-                    } else {
-                        let check = findAbc(a)
-                        if (check === true) {
-                            setSeconds(0)
-                            setMinutes(timeArray[0])
-                            setTimeSection(timeArray[0])
-                            filterMap()
-                            localStorage.setItem('timeing', '1')
-                        } else {
-                            let firstTime = test.data && test.data.filter((e) => e.section.section === a)
-                            setSeconds(0)
-                            setMinutes(firstTime[0].section.duration)
-                            localStorage.removeItem("timeing")
-                        }
-                    }
-                } else {
-                    let check = findAbc(a)
-                    if (check === true) {
-                        setSeconds(0)
-                        setMinutes(timeArray[0])
-                        localStorage.setItem('timeing', '1')
-                    } else {
-                        firstTimeFunc(a)
-                    }
-                }
             });
         });
+    }
+
+    const handleSect = (a, index) => {
+        const lastTime = `${minutes}-${seconds}`
+        const section = arrs[sect]
+        let item = { lastTime, section }
+        lastTimePost(item)
+        let firstTime = test.data && test.data.filter((e) => e.section.section === a)
+        setQuestionLen(firstTime.length)
+        setSectionWiseTime(firstTime[0].section.duration)
+        getBackup()
+        setSect(index)
+        window.scrollTo(0, 0)
+        if (backup.length !== 0) {
+            let check = findAbc(a)
+            if (check == true) {
+                filterMap()
+                filterMapSection()
+                let resp = filterSectionAbc[0]
+                setQuestionLen(([].concat.apply([], filterSectionAbcforSection).length))
+                setSectionWiseTime(timeArray[0])
+                if (filterSectionAbc.length !== 0) {
+                    if (localStorage.getItem('timeing') == '1') {
+                        return
+                    } else {
+                        if (resp[resp.length - 1].lastTime.split("-")[1] === '0') {
+                            setSeconds(1)
+                        } else {
+                            setSeconds(resp[resp.length - 1].lastTime.split("-")[1])
+                        }
+                        setMinutes(resp[resp.length - 1].lastTime.split("-")[0])
+                        localStorage.setItem('timeing', '1')
+                        return
+                    }
+                }
+            }
+
+            if (backup && backup.find((p) => p.imageOneQuizeCorrect.section.section === a)) {
+                let check = findAbc(a)
+                if (check === false) {
+                    let resp = backup && backup.filter((p) => p.imageOneQuizeCorrect.section.section === a)
+
+                    if (resp[resp.length - 1].lastTime.split("-")[1] === '0') {
+                        setSeconds(1)
+                    } else {
+                        setSeconds(resp[resp.length - 1].lastTime.split("-")[1])
+                    }
+                    setMinutes(resp[resp.length - 1].lastTime.split("-")[0])
+                    localStorage.removeItem("timeing")
+                } else {
+                    setSeconds(0)
+                    setMinutes(timeArray[0])
+                    filterMap()
+                    setQuestionLen(filterSectionAbc[0].length)
+                    localStorage.setItem('timeing', '1')
+                }
+
+            } else {
+                let check = findAbc(a)
+                if (check === true) {
+                    setSeconds(0)
+                    setMinutes(timeArray[0])
+                    setTimeSection(timeArray[0])
+                    filterMap()
+                    localStorage.setItem('timeing', '1')
+                } else {
+                    let firstTime = test.data && test.data.filter((e) => e.section.section === a)
+                    setSeconds(0)
+                    setMinutes(firstTime[0].section.duration)
+                    localStorage.removeItem("timeing")
+                }
+            }
+        } else {
+            let check = findAbc(a)
+            if (check === true) {
+                setSeconds(0)
+                setMinutes(timeArray[0])
+                localStorage.setItem('timeing', '1')
+            } else {
+                firstTimeFunc(a)
+            }
+        }
     }
 
 
@@ -384,8 +384,6 @@ const ImageQuiz1 = ({ test }) => {
 
     //new code
     const submit = (section, question, object, rightAns, marks) => {
-        console.log(rightAns)
-        console.log(object)
 
         const lastTime = `${minutes}-${seconds}`
         var carrer = ''
@@ -461,7 +459,6 @@ const ImageQuiz1 = ({ test }) => {
     }
     lastSection.push(arrs[arrs.length - 1])
 
-    // console.log(sectionABC)
     return (
         <>
             <Container className={classes.container}>
@@ -498,8 +495,9 @@ const ImageQuiz1 = ({ test }) => {
                     <Grid item xs={12} sm={9} className={classes.grids2}>
                         {
                             test.data && test.data.map((e, i) => {
-                                if (arrs[sect] == e.section.section) {
+                                
 
+                                if (arrs[sect] == e.section.section) {
                                     return <Container align='left'>
                                         <Divider light='false' />
                                         <FormControl component="fieldset">
@@ -566,18 +564,19 @@ const ImageQuiz1 = ({ test }) => {
                                                             submit(e.section.section, e.question ? e.question : e.questionText, e.d ? e.d : e.dText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.d))}
                                                         control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.dText ? e.dText : ""}</div>{e.d ? <img style={{ height: '100px', width: '100px' }} src={process.env.REACT_APP_API_URL + e.d}></img> : ""}</Typography>} /> : ''}
 
-                                                {e.e || e.eText ? <FormControlLabel
-                                                    checked={
-                                                        e.eText ?
-                                                            backup && backup.find((p) => p.imageOneQuizeCorrect.id === e.id && p.userClickObj === e.eText ? true : false)
-                                                            :
-                                                            backup && backup.find((p) => p.imageOneQuizeCorrect.id === e.id && p.userClickObj === e.e ? true : false)
-                                                    }
-                                                    name={e.id} value={e.e ? e.e : e.eText}
+                                                {e.e || e.eText ?
+                                                    <FormControlLabel
+                                                        checked={
+                                                            e.eText ?
+                                                                backup && backup.find((p) => p.imageOneQuizeCorrect.id === e.id && p.userClickObj === e.eText ? true : false)
+                                                                :
+                                                                backup && backup.find((p) => p.imageOneQuizeCorrect.id === e.id && p.userClickObj === e.e ? true : false)
+                                                        }
+                                                        name={e.id} value={e.e ? e.e : e.eText}
 
-                                                    onChange={() =>
-                                                        submit(e.section.section, e.question ? e.question : e.questionText, e.e ? e.e : e.eText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.e))}
-                                                    control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.eText ? e.eText : ""}</div>{e.e ? <img style={{ height: '100px', width: '100px' }} src={process.env.REACT_APP_API_URL + e.e}></img> : ""}</Typography>} /> : ''}
+                                                        onChange={() =>
+                                                            submit(e.section.section, e.question ? e.question : e.questionText, e.e ? e.e : e.eText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.e))}
+                                                        control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.eText ? e.eText : ""}</div>{e.e ? <img style={{ height: '100px', width: '100px' }} src={process.env.REACT_APP_API_URL + e.e}></img> : ""}</Typography>} /> : ''}
                                             </RadioGroup>
                                         </FormControl>
                                     </Container>
