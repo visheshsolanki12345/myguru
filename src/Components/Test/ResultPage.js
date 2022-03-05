@@ -66,10 +66,10 @@ const ResultPage6To9 = () => {
             let item = { id, classSection }
             dispatch(getTest(item));
         }
-        if (localStorage.getItem('typeOfTest') === "Mulitpal Quiz Select Test"){
+        if (localStorage.getItem('typeOfTest') === "Mulitpal Quiz Select Test") {
             carrer_get()
         }
-        
+
         getResult()
     }, [dispatch])
 
@@ -124,8 +124,13 @@ const ResultPage6To9 = () => {
                 <Container className={classes.container}>
                     <Container>
                         <Grid container className={classes.congrid}>
-                            <Grid item >
+                            <Grid item lg={10} >
                                 <Button className={classes.headbutton}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>{test.discreption && test.discreption.map((e) => e.resultTitle.mainHeading)} </Typography></Button>
+                               
+                            </Grid>
+                            <Grid item lg={2} >
+                         
+                            <Button className={classes.headbutton} onClick={() => window.print()}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>Print</Typography></Button>
                             </Grid>
                         </Grid>
                         <Grid container className={classes.congrid}>
@@ -136,34 +141,50 @@ const ResultPage6To9 = () => {
                         </Grid>
                     </Container>
 
-
                     {/* career cluster description */}
-                {
-                    typeOfTest === "Mulitpal Quiz Select Test" ?
-                    <Container style={{ marginTop: '30px' }}>
-                        <h1 style={{ textAlign: 'center' }}>General Information about various Career Clusters:</h1>
-                        {carrerData && carrerData.map((c, i) =>
-                            <>
-                                <Grid container style={{ paddingTop: '20px' }}>
-                                    <Grid align='left' justify='left' item lg={12}>
-                                        <Typography variant='h4'>
-                                            {i + 1}.  {c.section.section}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid align='left' justify='left' item lg={12}>
-                                        <Typography variant='h5' >
-                                            {c.description}
-                                        </Typography>
 
-                                    </Grid>
-                                </Grid>
-                                <Divider />
-                            </>
-                        )}
-                    </Container>
-                    :
-                    ""
-                }
+                    {
+                        typeOfTest == "One Images Quiz Correct Test" || typeOfTest === "Mulitpal Quiz Select Test" ?
+                            <Container style={{ marginTop: '30px' }}>
+                                {typeOfTest == "One Images Quiz Correct Test" ? <h1 style={{ textAlign: 'center' }}>General Information about various Abilities:</h1>
+                                    : <h1 style={{ textAlign: 'center' }}>General Information about various Career Clusters:</h1>}
+
+                                {test.discreption && test.discreption.map((e) =>
+                                    <>
+                                        <Grid container style={{ paddingTop: '20px' }}>
+                                            {
+                                                Object.entries(e.resultTitle.the_json).map(([k, v]) =>
+                                                    <div>
+                                                        <h1>{k}</h1>
+                                                        <h1>{v}</h1>
+                                                    </div>
+                                                )
+                                            }
+                                        </Grid>
+                                        <Divider />
+                                    </>
+                                )}
+                            </Container>
+                            :
+                            ""
+                    }
+
+                    {
+                        typeOfTest === "Mulitpal Quiz Select Test" ?
+                            <Container style={{ marginTop: '30px' }}>
+                                <h1 style={{ textAlign: 'center' }}>WHAT IS A CAREER CLUSTER?</h1>
+                                <h1 style={{ textAlign: 'center' }}>IMPORTANCE OF CAREER CLUSTER INTEREST ASSESSMENT</h1>
+                                {
+                                    test.discreption && test.discreption.map((e) =>
+                                        <h1>
+                                            {e.resultTitle.discription}
+                                        </h1>
+                                    )
+                                }
+                            </Container>
+                            :
+                            ""
+                    }
 
 
                     {/* Table result */}

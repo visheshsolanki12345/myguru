@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getTest } from '../../actions/Test/TestAction';
 import Piechart from './PieChar';
-import  Divider  from '@mui/material/Divider';
+import Divider from '@mui/material/Divider';
 
 
 
@@ -248,33 +248,39 @@ const Analysis = ({ data, carrerData }) => {
           </Grid>
         </div>
       })}
-      <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
 
-        <List className='mt-2 mx-4'>
-          <Typography className='d-flex row' align='left' style={{ fontSize: '15px' }}><b>Based on the data available from Career Cluster Assessment, three top Career Clusters are suggested as below:</b>
-          </Typography>
-          {
-            typeOfTest === "Mulitpal Quiz Select Test" &&
-            data && data.map((k, i) =>
-              rows2 && rows2.map((r) =>
-                r.map((p) =>
-                  p === k.totalCount ?
-                    <>
-                      <ListItem style={{ fontSize: '15px' }}>
-                       <Typography variant='h4' > {i + 1}. {k.section} ({k.totalCount}-{k.grade})</Typography>
-                      </ListItem>
-                      <Typography variant='h5' style={{marginLeft:'12px'}} align='left'>
-                      {filterSection(k.section)[0].description}
-                      </Typography>
-                      <Divider/>
-                    </>
-                    :
-                    ""
-                )))
+      {
+        typeOfTest === "Mulitpal Quiz Select Test" ?
+          <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
+            <List className='mt-2 mx-4'>
+              <Typography className='d-flex row' align='left' style={{ fontSize: '15px' }}><b>Based on the data available from Career Cluster Assessment, three top Career Clusters are suggested as below:</b>
+              </Typography>
+              {
+                typeOfTest === "Mulitpal Quiz Select Test" &&
+                data && data.map((k, i) =>
+                  rows2 && rows2.map((r) =>
+                    r.map((p) =>
+                      p === k.totalCount ?
+                        <>
+                          <ListItem style={{ fontSize: '15px' }}>
+                            <Typography variant='h4' > {i + 1}. {k.section} ({k.totalCount}-{k.grade})</Typography>
+                          </ListItem>
+                          <Typography variant='h5' style={{ marginLeft: '12px' }} align='left'>
+                            {filterSection(k.section)[0].description}
+                          </Typography>
+                          <Divider />
+                        </>
+                        :
+                        ""
+                    )))
 
-          }
-        </List>
-      </Grid>
+              }
+            </List>
+          </Grid>
+          :
+          ""
+      }
+
 
 
     </>

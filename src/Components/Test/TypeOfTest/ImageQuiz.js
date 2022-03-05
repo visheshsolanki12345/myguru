@@ -384,6 +384,8 @@ const ImageQuiz1 = ({ test }) => {
 
     //new code
     const submit = (section, question, object, rightAns, marks) => {
+        console.log(rightAns)
+        console.log(object)
 
         const lastTime = `${minutes}-${seconds}`
         var carrer = ''

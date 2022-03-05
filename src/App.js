@@ -46,7 +46,7 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                {/* <Header /> */}
+                <Header />
                 <Switch>
                     {/* <Route component={PageNotFound} /> */}
                     <Route exact path="/" component={MyGuruHome} />
@@ -86,7 +86,7 @@ function App() {
                     <Prodected exact path="/testpage" component={Testpage} />
 
                 </Switch>
-                {/* <Footer /> */}
+                <Footer />
             </BrowserRouter>
         </div>
     );
