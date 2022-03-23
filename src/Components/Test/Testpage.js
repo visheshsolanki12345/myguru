@@ -30,24 +30,25 @@ const Testpage = () => {
   let typeOfTest = localStorage.getItem('typeOfTest')
   // console.log()
   useEffect(() => {
-    if (typeOfTest !== imageTest){
-    let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(myInterval)
-          history.push('/result')
-        } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
+    if (typeOfTest !== imageTest) {
+      let myInterval = setInterval(() => {
+        if (seconds > 0) {
+          setSeconds(seconds - 1);
         }
-      }
-    }, 1000)
-    return () => {
-      clearInterval(myInterval);
-    };}
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(myInterval)
+            history.push('/result')
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
+        }
+      }, 1000)
+      return () => {
+        clearInterval(myInterval);
+      };
+    }
   });
 
   let rows = []
@@ -251,7 +252,7 @@ const Testpage = () => {
   };
 
 
-    
+
   const handleRadio = (i) => {
     setRadioSelect(i)
   }
@@ -356,7 +357,13 @@ const Testpage = () => {
                           <Divider light='false' />
                           <FormControl component="fieldset">
 
-                            <FormLabel component="legend"><Typography variant='h4'>Q{i + 1}. {e.question}</Typography></FormLabel>
+                            <FormLabel component="legend">
+                              <Typography variant='h4'>
+                                Q{i + 1}.<div 
+                                  dangerouslySetInnerHTML={{ __html: e.question }}
+                                />
+                              </Typography>
+                              </FormLabel>
                             <RadioGroup
                               aria-label=""
                               defaultValue=""
@@ -450,14 +457,14 @@ const Testpage = () => {
                     <Grid item xs={6} md={8} > <Button onClick={() => sect > 0 && sect < arrs.length ? handleSect(sect - 1) : ''} ><div className="button_slidenext slide_rightnext" >Previous</div></Button>
                     </Grid>
                     {
-                    sect < arrs.length - 1 ?
-                    <Grid item xs={6} md={4} > <Button onClick={() => sect < arrs.length - 1 ? handleSect(sect + 1) : ''} > <div className="button_slidenext slide_rightnext" >Next</div></Button>
-                    </Grid>
-                    :
-                    <Grid item xs={6} md={4} > <Link to="/result" ><Button > <div className="button_slidenext slide_rightnext" >Submit</div></Button></Link>
-                    </Grid>
+                      sect < arrs.length - 1 ?
+                        <Grid item xs={6} md={4} > <Button onClick={() => sect < arrs.length - 1 ? handleSect(sect + 1) : ''} > <div className="button_slidenext slide_rightnext" >Next</div></Button>
+                        </Grid>
+                        :
+                        <Grid item xs={6} md={4} > <Link to="/result" ><Button > <div className="button_slidenext slide_rightnext" >Submit</div></Button></Link>
+                        </Grid>
                     }
-                    
+
                   </Grid>
 
                 </Grid>
@@ -467,12 +474,12 @@ const Testpage = () => {
                 <Grid item >
                   <Link to="/result" >
                     <span className="btn10">Submit Test</span>
-                    <div className="transition"></div> 
+                    <div className="transition"></div>
                   </Link>
                 </Grid>
               </Grid>
             </Container></>
-            )
+          )
       }
 
     </>

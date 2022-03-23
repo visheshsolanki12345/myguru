@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Divider from '@mui/material/Divider';
 import SideBarChart from './TypeOfTest/SideBarChart';
+import ReferenceTable from './ReferenceTable';
 
 
 const ResultPage6To9 = () => {
@@ -117,13 +118,13 @@ const ResultPage6To9 = () => {
     };
     // console.log(carrerData)
 
-    let array = [] 
-    let arrayy = [] 
+    let array = []
+    let arrayy = []
     data2 &&
-    data2.forEach((e, index) => {
-        array.push(e.totalCount);
-        arrayy.push(e.section);
-    });
+        data2.forEach((e, index) => {
+            array.push(e.totalCount);
+            arrayy.push(e.section);
+        });
 
     return (
         <Fragment>
@@ -142,12 +143,25 @@ const ResultPage6To9 = () => {
                                 <Button className={classes.headbutton} onClick={() => window.print()}><Typography variant='h4' style={{ color: 'white', padding: '5px' }}>Print</Typography></Button>
                             </Grid>
                         </Grid>
+
+                        <Container style={{ marginTop: '30px' }}>
+                            {
+                                test.discreption && test.discreption.map((e) =>
+
+                                    <div
+                                        dangerouslySetInnerHTML={{ __html: e.resultTitle.discription }}
+                                    />
+                                )
+                            }
+                        </Container>
+
+                        {/* 
                         <Grid container className={classes.congrid}>
                             <Grid item >
                                 <Typography variant='h4' style={{ padding: '10px' }}>{resultTitle}</Typography>
                                 <Typography style={{ padding: '10px', textAlign: 'left', fontSize: '19px' }}>{discription}</Typography>
                             </Grid>
-                        </Grid>
+                        </Grid> */}
                     </Container>
 
                     {/* career cluster description */}
@@ -177,27 +191,16 @@ const ResultPage6To9 = () => {
                             ""
                     }
 
-                    {
-                        typeOfTest === "Mulitpal Quiz Select Test" ?
-                            <Container style={{ marginTop: '30px' }}>
-                                <h1 style={{ textAlign: 'center' }}>WHAT IS A CAREER CLUSTER?</h1>
-                                <h1 style={{ textAlign: 'center' }}>IMPORTANCE OF CAREER CLUSTER INTEREST ASSESSMENT</h1>
-                                {
-                                    test.discreption && test.discreption.map((e) =>
-                                        <Typography style={{ textAlign: 'left', fontSize: '19px' }} >
-                                            {e.resultTitle.discription}
-                                        </Typography>
-                                    )
-                                }
-                            </Container>
-                            :
-                            ""
-                    }
-
 
                     {/* Table result */}
 
                     <Container style={{ paddingTop: '40px' }}>
+                        {
+                            typeOfTest === "Mulitpal Quiz Select Test" ?
+                                <h1>Your Test Score & Performance Index for Career Cluster Assessment</h1>
+                                :
+                                ""
+                        }
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -296,7 +299,14 @@ const ResultPage6To9 = () => {
                     <Container>
                         <Grid container className={classes.congrid}>
                             <Grid item >
-                                <Typography variant='h3' style={{ padding: '30px' }}>Bar Graph Of Your Score</Typography>
+                                {
+                                    typeOfTest === "Mulitpal Quiz Select Test" ?
+                                        <Typography variant='h3' style={{ padding: '30px' }}>Career Cluster AssessmentBar Chart</Typography>
+
+                                        :
+                                        <Typography variant='h3' style={{ padding: '30px' }}>Bar Graph Of Your Score</Typography>
+
+                                }
                             </Grid>
                         </Grid>
                     </Container>
@@ -308,6 +318,23 @@ const ResultPage6To9 = () => {
                     </Container>
                 </Container>
             )}
+            {
+                typeOfTest === "Mulitpal Quiz Select Test" ?
+                    <div>
+                        <Typography variant='h4' style={{ 'fontWeight': '600px', color:"black",textAlign:"left" }}>
+                            * If marks are below 8 in the three top Career Clusters suggested above. It is important that you need to work hard (put more efforts) in these cluster if opted by you.
+
+                        </Typography>
+                        <Typography variant='h4' style={{ 'fontWeight': '800px', color:"black",textAlign:'right' }}>
+                        Chairperson
+                            (ABERD)
+
+                          </Typography>
+                    </div>
+                    :
+                    ""
+            }
+
             <div>
                 {
                     typeOfTest === "One Images Quiz Correct Test" ?
@@ -349,7 +376,7 @@ export const ResultPage = ({ data, array, arrayy }) => {
     }))
     let typeOfTest = localStorage.getItem('typeOfTest')
     const classes = useStyle()
-    
+
 
     return (
         <Fragment>
@@ -436,6 +463,7 @@ export const ResultPage = ({ data, array, arrayy }) => {
                     <Analysis data={data && data}></Analysis>
                 </Container>
             </Container>
+            <ReferenceTable />
         </Fragment>
     )
 }

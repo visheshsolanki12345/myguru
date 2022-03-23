@@ -202,7 +202,9 @@ const PaymentSummary = () => {
                                     <Typography variant='h4' className="text-start mt-3 text-light">Student Name : <span>{user && user.last_name}</span></Typography>
                                     {/* <h1 className="text-start mt-3 fw-bold text-light">Date : <span>{e.date}</span></h1> */}
                                     <Typography variant='h4' className="text-start mt-3 text-light">Class : <span>{e.className.newClass}</span></Typography>
-                                    <Typography variant='h4' className="text-start mt-3 text-light">Test Instruction : <span>{e.title.description}</span></Typography>
+                                    <Typography variant='h4' className="text-start mt-3 text-light">Test Instruction : 
+                                    <span>{e.title.description}
+                                    </span></Typography>
                                 </div>
                             )
                         }

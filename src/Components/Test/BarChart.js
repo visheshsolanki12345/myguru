@@ -4,7 +4,6 @@ import {
 } from 'devextreme-react/chart';
 
 export function Bpp({ data }) {
-
   return (
     <>
      <Chart
@@ -12,7 +11,7 @@ export function Bpp({ data }) {
         palette="Soft"
         dataSource={data}>
         <CommonSeriesSettings
-          argumentField="section"
+          argumentField="index"
           valueField="totalCount"
           type="bar"
           ignoreEmptyPoints={true}

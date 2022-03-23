@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import {Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { getTest } from '../../actions/Test/TestAction'
 import { useSelector, useDispatch } from "react-redux";
@@ -29,7 +29,7 @@ const Assessment = () => {
             localStorage.setItem("time", item.title.duration)
         });
 
-    if(loading){
+    if (loading) {
         return <Loader />
     }
 
@@ -49,20 +49,25 @@ const Assessment = () => {
                                     <h1 className="text-start mt-3 ml-4 fw-bold gray">General Instructions</h1>
                                     <div className=" ">
                                         <h1 className="text-center mt-3 gray">Please read the instructions carefully</h1>
-                                        <p style={{textAlign:'left',fontSize:'19px',fontWeight:'500',marginLeft:'20px'}}>Instructions for students:</p>
-                                     
+                                        <p style={{ textAlign: 'left', fontSize: '19px', fontWeight: '500', marginLeft: '20px' }}>Instructions for students:</p>
                                     </div>
                                     <div>
-                                        <ul style={{textAlign:'left',fontSize:'14px'}}  >
-                                            <li  >Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
-                                            <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
-                                            <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
-                                            <li>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.</li>
+                                        <ul style={{ textAlign: 'left', fontSize: '14px' }}  >
+                                            <div>
+                                                {
+                                                    test.discreption && test.discreption.map((e) =>
+                                                        <div
+                                                            dangerouslySetInnerHTML={{ __html: e.title.generalInstructions }}
+                                                        />
+                                                    )
+                                                }
+                                            </div>
+
                                         </ul>
                                     </div>
-                                   <div  style={{padding:'40px'}}>
-                                   <Link to='/testpage'>   <Button >  <div className="button_slide slide_down">Proceed to Test </div></Button> </Link>
-                                   </div>
+                                    <div style={{ padding: '40px' }}>
+                                        <Link to='/testpage'>   <Button >  <div className="button_slide slide_down">Proceed to Test </div></Button> </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -495,14 +495,21 @@ const ImageQuiz1 = () => {
                     <Grid item xs={12} sm={9} className={classes.grids2}>
                         {
                             test.data && test.data.map((e, i) => {
-                                
+
 
                                 if (arrs[sect] == e.section.section) {
                                     return <Container align='left'>
                                         <Divider light='false' />
                                         <FormControl component="fieldset">
                                             <FormLabel component="legend"><Typography variant='h4' className='d-flex row'>
-                                                <div> Q{i + 1}. {e.questionText ? e.questionText : ""}</div>  {e.question ? <img style={{ height: '400px', width: '400px' }} src={process.env.REACT_APP_API_URL + e.question}></img> : ""}</Typography></FormLabel>
+                                                <div> Q{i + 1}.
+                                                    {
+                                                        e.questionText ?
+                                                            <div
+                                                                dangerouslySetInnerHTML={{ __html: e.questionText }}
+                                                            />
+                                                            : ""
+                                                    }</div>  {e.question ? <img style={{ height: '400px', width: '400px' }} src={process.env.REACT_APP_API_URL + e.question}></img> : ""}</Typography></FormLabel>
 
                                             <RadioGroup
                                                 aria-label=""

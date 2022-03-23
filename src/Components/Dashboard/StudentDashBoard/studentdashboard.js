@@ -51,6 +51,7 @@ const useStyles = makeStyles({
 
 
 function ResponsiveDrawer(props) {
+  const [dash,setDash] = React.useState(1)
   const classes = useStyles();
   const [changelayout, setChangelayout] = React.useState(0);
   const { window } = props;
@@ -82,7 +83,7 @@ function ResponsiveDrawer(props) {
                 variant="h4"
               >
                 {" "}
-                {text.logo}
+                {/* {text.logo} */}
                 {text.text}
               </Typography>
             </Container>
@@ -132,13 +133,7 @@ function ResponsiveDrawer(props) {
     return { name, calories, fat, carbs, protein };
   }
 
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
+
 
   const removeLocal = () => {
     localStorage.removeItem("id");
@@ -150,6 +145,8 @@ function ResponsiveDrawer(props) {
   const dispatch = useDispatch();
   const [data, setData] = React.useState([]);
   const [dataPay, setDataPay] = React.useState([]);
+  const [video, setVideo] = React.useState([]);
+
   const [loading, setLoading] = React.useState(true);
   const history = useHistory();
   let user = JSON.parse(localStorage.getItem("user-details"));
@@ -157,7 +154,8 @@ function ResponsiveDrawer(props) {
   useEffect(() => {
     getData();
     getDataPay();
-    removeLocal();
+    parchesVideo()
+    // removeLocal();
   }, []);
 
   const getData = () => {
@@ -174,6 +172,22 @@ function ResponsiveDrawer(props) {
       });
     });
   };
+  
+  const parchesVideo = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/api/video/parches-videos/`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user && user.access}`,
+      },
+    }).then((result) => {
+      result.json().then((resp) => {
+        setVideo(resp);
+      });
+    });
+  };
+
 
   const getDataPay = () => {
     fetch(`${process.env.REACT_APP_API_URL}/api/buy-test/`, {
@@ -190,264 +204,121 @@ function ResponsiveDrawer(props) {
     });
   };
 
-  const classFunc = (id) => {
+  const classFunc = (id, classSection) => {
     // removeLocal();
     let item = { id };
     localStorage.setItem("id", id);
+    localStorage.setItem("classSection", classSection);
     localStorage.setItem("continue", "continue");
     dispatch(getTest(item));
     history.push("./paymentsummery");
   };
 
-  const classFuncPay = (id) => {
+  const classFuncPay = (id, classSection) => {
     // removeLocal();
     let item = { id };
     localStorage.setItem("id", id);
+    localStorage.setItem("classSection", classSection);
     localStorage.setItem("continue", "continue");
     dispatch(getTest(item));
     history.push("./paymentsummery");
   };
+
 
   useEffect(() => {
     dispatch(getAllStudentData())
   }, [dispatch])
 
-  return (
-    <>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            ml: { sm: `${drawerWidth}px` },
-          }}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h3" noWrap component="div">
-              {changelayout == 0 ? "Dasboard" : changelayout == 1 ? "Test" : ""}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box
-          component="nav"
-          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-          aria-label="mailbox folders"
-        >
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Drawer
-            container={container}
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-            sx={{
-              display: { xs: "block", sm: "none" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-          >
-            {drawer}
-          </Drawer>
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: { xs: "none", sm: "block" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Box>
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-          }}
-        >
-          <Toolbar />
-          {changelayout == 0 ? (
-            <>
-              <Container>
-                <Grid container spacing={4}>
-                  <Grid lg={9} item>
-                    <Grid container spacing={3} direction="column">
-                      <Grid item>
-                        <Paper elevation={3}>
-                          <Grid className={classes.paddings} container>
-                            <Grid item lg={8}>
-                              <div>
-                                {" "}
-                                <Typography variant="h3">
-                                  Welcome Back, John! You Completed 80% of the
-                                  Test. Progress is very good!
-                                </Typography>
-                              </div>
-                              <div
-                                style={{
-                                  position: "absolute",
-                                  marginLeft: "100px",
-                                  marginTop: "0px",
-                                }}
-                              >
-                                <Paper elevation={3}>
-                                  <Typography variant="h4">3</Typography>
-                                  <Typography variant="h5">
-                                    Total Tests Given
-                                  </Typography>
-                                </Paper>
-                              </div>
-                              <div
-                                style={{
-                                  position: "absolute",
-                                  marginLeft: "300px",
-                                  marginTop: "0px",
-                                }}
-                              >
-                                <Paper elevation={3}>
-                                  <Typography variant="h4">3</Typography>
-                                  <Typography variant="h5">
-                                    Total Tests Given
-                                  </Typography>
-                                </Paper>
-                              </div>
-                            </Grid>
-                            <Grid item lg={3}>
-                              <img src="assets/images/dashboard_image.jpg"></img>
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                      </Grid>
-                      <Grid item>
-                        {" "}
-                        <Paper elevation={3}>
-                          <Grid className={classes.paddings} container>
-                            <Grid item lg={8}>
-                              <div>
-                                {" "}
-                                <Typography variant="h3">
-                                  Welcome Back, John! You Completed 80% of the
-                                  Test. Progress is very good!
-                                </Typography>
-                              </div>
-                              <div
-                                style={{
-                                  position: "absolute",
-                                  marginLeft: "100px",
-                                  marginTop: "0px",
-                                }}
-                              >
-                                <Paper elevation={3}>
-                                  <Typography variant="h4">3</Typography>
-                                  <Typography variant="h5">
-                                    Total Tests Given
-                                  </Typography>
-                                </Paper>
-                              </div>
-                              <div
-                                style={{
-                                  position: "absolute",
-                                  marginLeft: "300px",
-                                  marginTop: "0px",
-                                }}
-                              >
-                                <Paper elevation={3}>
-                                  <Typography variant="h4">3</Typography>
-                                  <Typography variant="h5">
-                                    Total Tests Given
-                                  </Typography>
-                                </Paper>
-                              </div>
-                            </Grid>
-                            <Grid item lg={3}>
-                              <img src="assets/images/dashboard_image.jpg"></img>
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant="h3" align="left">
-                          Purchased Videos
-                        </Typography>
-                        <div>
-                          <Paper elevation={3} className="d-flex flex-wrap">
-                            {purchasedvideo.map((p) => (
-                              <>
-                                <Paper
-                                  className={classes.paddings}
-                                  elevation={3}
-                                >
-                                  <Typography variant="h3">
-                                    {p.video}
-                                  </Typography>
-                                  <Typography variant="h4">{p.text}</Typography>
-                                </Paper>
-                              </>
-                            ))}
-                          </Paper>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid lg={3} item>
-                    <Grid container spacing={3} direction="column">
-                      <Grid items lg={12}>
-                        <Typography align="center" variant="h4">
-                          <Avatar src="/broken-image.jpg" />
-                          John Wick <ModeEditOutlineOutlined />
-                        </Typography>
-                        <Typography variant="h5" align="center">
-                          email@gmail.com
-                        </Typography>
-                      </Grid>
-                      <Grid items lg={12}>
-                        <Grid container direction="column">
-                          <Grid item lg={5}>
-                            Recent Activity
-                          </Grid>
-                          <Grid item lg={5}>
-                            Login Time Today
-                          </Grid>
-                          <Grid item lg={5}>
-                            Last Login
-                          </Grid>
-                          <Grid item lg={5}>
-                            Pending Tests
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Container>
-            </>
-          ) : (
-            ""
-          )}
-          {changelayout == 1 ? (
-            <>
-              <Container>
+  const userInfo = JSON.parse(localStorage.getItem('user-details'))
 
-                <TableContainer component={Paper}>
+  return (
+    <div style={{marginTop:'140px',paddingLeft:'50px',marginBottom:'40px'}}>
+      <Grid container spacing={6}>
+        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+        <Grid container align='left' spacing={6} style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12} style={{paddingBottom:'50px'}}> <img style={{height:'80px',width:'150px'}} src="assets/images/logo.png"></img></Grid>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12} style={{cursor:'pointer',background: dash==1?'#90ee90':'white'}}  onClick={()=>setDash(1)}><Typography style={{color: dash==1?'white':'black'}} variant='h4'>Dashboard</Typography></Grid>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12}  style={{cursor:'pointer',background: dash==2?'#90ee90':'white'}}  onClick={()=>setDash(2)}><Typography style={{color: dash==2?'white':'black'}} variant='h4'>Test</Typography></Grid>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12}  style={{cursor:'pointer',background: dash==3?'#90ee90':'white'}}  onClick={()=>setDash(3)}><Typography style={{color: dash==3?'white':'black'}} variant='h4'>Video</Typography></Grid>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12}><Typography variant='h4'>Articles</Typography></Grid>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12}><Typography variant='h4'>Counsellor</Typography></Grid>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12}><Typography variant='h4'>Appointment</Typography></Grid>
+           
+        </Grid>
+        </Grid> 
+        <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
+          { dash==1?( <Grid container spacing={2}>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12} style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',background:'blue',}}>
+            <Typography variant='h3' style={{color:'white'}}>Dashboard</Typography>
+            </Grid>
+            <Grid item xs={12} ms={12} md={7} lg={7} xl={7} ><Typography variant='h3' style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',padding:"30px"}}>Welcome Back,{userInfo && userInfo.name}!</Typography></Grid>
+            <Grid item xs={12} ms={12} md={5} lg={5} xl={5}><Typography variant='h4'> {userInfo && userInfo.email} </Typography></Grid>
+            <Grid item xs={12} ms={12} md={7} lg={7} xl={7} style={{textAlign:"left",marginTop:'20px'}}><Typography variant='h3' style={{lineHeight:'2'}}>Purchased Video</Typography></Grid>
+            <Grid item xs={12} ms={12} md={7} lg={7} xl={7}>
+              <Grid container>
+                <Grid item xs={3} ms={3} md={3} lg={3} xl={3} style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',lineHeight:'2',padding:'20px'}}>
+             <Typography variant='h4'> TEST:  {dataPay && Object.keys(dataPay).length}</Typography>
+                </Grid>
+                <Grid item xs={3} ms={3} md={3} lg={3} xl={3} style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',lineHeight:'2',padding:'20px'}}>
+           <Typography variant='h4'>   VIDEO:   {video && Object.keys(video).length}</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+        </Grid>):dash==3?( <Grid container spacing={2}>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12} style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',background:'blue',}}>
+            <Typography variant='h3' style={{color:'white'}}>Video</Typography>
+            </Grid>
+            <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell>
+                          <Typography
+                            style={{ fontSize: "19px", color: "white", padding: '12px' }}
+                          >
+                            Videos
+                          </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell align='right' >
+                          <Typography
+                            style={{ fontSize: "19px", color: "white", padding: '12px' }}
+                          >
+                            PURCHASE  Video
+                          </Typography>
+                        </StyledTableCell>
+
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {Object.entries(video && video).map(([k, v]) => (
+                        <StyledTableRow key={k}>
+                          <StyledTableCell component="th" scope="row">
+                            <Typography
+                              style={{ fontSize: "17px", fontWeight: '700', color: "black", padding: '12px' }}
+                            >
+                              {v.split("<==>")[0]}
+                            </Typography>
+                            <img style={{'width': '100px', 'height': '70px'}} src={`${process.env.REACT_APP_API_URL}/media/${v.split("<==>")[1]}`} alt="video" />
+                          </StyledTableCell>
+
+                          <StyledTableCell align='right' style={{ cursor: 'pointer' }}  component="th" scope="row">
+                            <Link to={`/video-page/${k}`}><Button variant="contained" color="success"><Typography
+                              style={{ fontSize: "17px", color: "black", padding: '12px' }}
+                            >
+                              watch
+                            </Typography></Button></Link>
+                          </StyledTableCell>
+
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+        </Grid>):dash==2?( <Grid container spacing={2}>
+            <Grid item xs={12} ms={12} md={12} lg={12} xl={12} style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',background:'blue',}}>
+            <Typography variant='h3' style={{color:'white'}}>test</Typography>
+            </Grid>
+            <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
                       <TableRow>
@@ -475,11 +346,11 @@ function ResponsiveDrawer(props) {
                             <Typography
                               style={{ fontSize: "17px", fontWeight: '700', color: "black", padding: '12px' }}
                             >
-                              {v}<sup>th</sup>
+                              {v.split("<==>")[0]}<sup>th</sup>
                             </Typography>
                           </StyledTableCell>
 
-                          <StyledTableCell align='right' style={{ cursor: 'pointer' }} onClick={() => classFunc(k)} component="th" scope="row">
+                          <StyledTableCell align='right' style={{ cursor: 'pointer' }} onClick={() => classFunc(k, v.split("<==>")[1])} component="th" scope="row">
                             <Button variant="contained" color="success"><Typography
                               style={{ fontSize: "17px", color: "black", padding: '12px' }}
                             >
@@ -492,72 +363,333 @@ function ResponsiveDrawer(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </Container>
-              <hr />
+        </Grid>):""
+            
+         }
+        </Grid> 
+      </Grid>
 
-              <Container>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                      <TableRow>
-                        <StyledTableCell>
-                          <Typography
-                            style={{ fontSize: "19px", color: "white", padding: '12px' }}
-                          >
-                            Class
-                          </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell align='right' >
-                          <Typography
-                            style={{ fontSize: "19px", color: "white", padding: '12px' }}
-                          >
-                            PURCHASE  TEST
-                          </Typography>
-                        </StyledTableCell>
-
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {Object.entries(dataPay && dataPay).map(([k, v]) => (
-                        <StyledTableRow key={k}>
-                          <StyledTableCell component="th" scope="row">
-                            <Typography
-                              style={{ fontSize: "17px", fontWeight: '700', color: "black", padding: '12px' }}
-                            >
-                              {v}<sup>th</sup>
-                            </Typography>
-                          </StyledTableCell>
-
-                          <StyledTableCell align='right' style={{ cursor: 'pointer' }} onClick={() => classFuncPay(k)} component="th" scope="row">
-                            <Button variant="contained" color="success"><Typography
-                              style={{ fontSize: "17px", color: "black", padding: '12px' }}
-                            >
-                              Continue Test
-                            </Typography></Button>
-                          </StyledTableCell>
-
-                        </StyledTableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Container>
-            </>
-          ) : (
-            ""
-          )}
-        </Box>
-      </Box>
-    </>
+      
+    </div>
   );
 }
 
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
+ 
 export default ResponsiveDrawer;
+
+
+// <Box sx={{ display: "flex" }} >
+//         <CssBaseline />
+//         <AppBar
+//           position="fixed"
+//           sx={{
+//             width: { sm: `calc(100% - ${drawerWidth}px)` },
+//             ml: { sm: `${drawerWidth}px` },
+//           }}
+//         >
+//           <Toolbar>
+//             <IconButton
+//               color="inherit"
+//               aria-label="open drawer"
+//               edge="start"
+//               onClick={handleDrawerToggle}
+//               sx={{ mr: 2, display: { sm: "none" } }}
+//             >
+//               <MenuIcon />
+//             </IconButton>
+//             <Typography variant="h3" noWrap component="div">
+//               {changelayout == 0 ? "Dasboard" : changelayout == 1 ? "Test" : ""}
+//             </Typography>
+//           </Toolbar>
+//         </AppBar>
+//         <Box
+//           component="nav"
+//           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+//           aria-label="mailbox folders"
+//         >
+//           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+//           <Drawer
+//             container={container}
+//             variant="temporary"
+//             open={mobileOpen}
+//             onClose={handleDrawerToggle}
+//             ModalProps={{
+//               keepMounted: true, // Better open performance on mobile.
+//             }}
+//             sx={{
+//               display: { xs: "block", sm: "none" },
+//               "& .MuiDrawer-paper": {
+//                 boxSizing: "border-box",
+//                 width: drawerWidth,
+//               },
+//             }}
+//           >
+//             {drawer}
+//           </Drawer>
+//           <Drawer
+//             variant="permanent"
+//             sx={{
+//               display: { xs: "none", sm: "block" },
+//               "& .MuiDrawer-paper": {
+//                 boxSizing: "border-box",
+//                 width: drawerWidth,
+//               },
+//             }}
+//             open
+//           >
+//             {drawer}
+//           </Drawer>
+//         </Box>
+//         <Box
+//           component="main"
+//           sx={{
+//             flexGrow: 1,
+//             p: 3,
+//             width: { sm: `calc(100% - ${drawerWidth}px)` },
+//           }}
+//         >
+//           <Toolbar />
+//           {changelayout == 0 ? (
+//             <>
+//               <Container>
+//                 <Grid container spacing={4}>
+//                   <Grid lg={9} item>
+//                     <Grid container spacing={3} direction="column">
+//                       <Grid item>
+//                         <Paper elevation={3}>
+//                           <Grid className={classes.paddings} container>
+//                             <Grid item lg={8}>
+//                               <div>
+//                                 {" "}
+//                                 <Typography variant="h3">
+//                                   Welcome Back, {userInfo && userInfo.name}!
+//                                 </Typography>
+//                               </div>
+//                               <div
+//                                 style={{
+//                                   position: "absolute",
+//                                   marginLeft: "100px",
+//                                   marginTop: "0px",
+//                                 }}
+//                               >
+//                               </div>
+//                             </Grid>
+//                             {/* <Grid item lg={3}>
+//                               <img src="assets/images/dashboard_image.jpg"></img>
+//                             </Grid> */}
+//                           </Grid>
+//                         </Paper>
+//                       </Grid>
+                      
+//                       <Grid item>
+//                         <Typography variant="h3" align="left">
+//                           Purchased Videos
+//                         </Typography>
+//                         <div>
+//                           <Paper elevation={3} className="d-flex flex-wrap">
+//                               <>
+//                                 <Paper
+//                                   className={classes.paddings}
+//                                   elevation={3}
+//                                 >
+//                                   <Typography variant="h3">
+//                                     {dataPay && Object.keys(dataPay).length}
+//                                   </Typography>
+//                                   <Typography variant="h4">Test</Typography>
+//                                 </Paper>
+
+//                                 <Paper
+//                                   className={classes.paddings}
+//                                   elevation={3}
+//                                 >
+//                                   <Typography variant="h3">
+//                                   {video && Object.keys(video).length}
+//                                   </Typography>
+//                                   <Typography variant="h4">Video</Typography>
+//                                 </Paper>
+//                               </>
+//                           </Paper>
+//                         </div>
+//                       </Grid>
+//                     </Grid>
+//                   </Grid>
+//                   <Grid lg={3} item>
+//                     <Grid container spacing={3} direction="column">
+//                       <Grid items lg={12}>
+//                         <Typography align="center" variant="h4">
+//                           <Avatar src="/broken-image.jpg" />
+//                           {userInfo && userInfo.name} <ModeEditOutlineOutlined />
+//                         </Typography>
+//                         <Typography variant="h5" align="center">
+//                         {userInfo && userInfo.email}
+//                         </Typography>
+//                       </Grid>
+//                     </Grid>
+//                   </Grid>
+//                 </Grid>
+//               </Container>
+//             </>
+//           ) : (
+//             ""
+//           )}
+//           {changelayout == 1 ? (
+//             <>
+//               <Container>
+
+//                 <TableContainer component={Paper}>
+//                   <Table sx={{ minWidth: 700 }} aria-label="customized table">
+//                     <TableHead>
+//                       <TableRow>
+//                         <StyledTableCell>
+//                           <Typography
+//                             style={{ fontSize: "19px", color: "white", padding: '12px' }}
+//                           >
+//                             Class
+//                           </Typography>
+//                         </StyledTableCell>
+//                         <StyledTableCell align='right' >
+//                           <Typography
+//                             style={{ fontSize: "19px", color: "white", padding: '12px' }}
+//                           >
+//                             PENDING TEST
+//                           </Typography>
+//                         </StyledTableCell>
+
+//                       </TableRow>
+//                     </TableHead>
+//                     <TableBody>
+//                       {Object.entries(data && data).map(([k, v]) => (
+//                         <StyledTableRow key={k}>
+//                           <StyledTableCell component="th" scope="row">
+//                             <Typography
+//                               style={{ fontSize: "17px", fontWeight: '700', color: "black", padding: '12px' }}
+//                             >
+//                               {v.split("<==>")[0]}<sup>th</sup>
+//                             </Typography>
+//                           </StyledTableCell>
+
+//                           <StyledTableCell align='right' style={{ cursor: 'pointer' }} onClick={() => classFunc(k, v.split("<==>")[1])} component="th" scope="row">
+//                             <Button variant="contained" color="success"><Typography
+//                               style={{ fontSize: "17px", color: "black", padding: '12px' }}
+//                             >
+//                               Continue Test
+//                             </Typography></Button>
+//                           </StyledTableCell>
+
+//                         </StyledTableRow>
+//                       ))}
+//                     </TableBody>
+//                   </Table>
+//                 </TableContainer>
+//               </Container>
+//               <hr />
+
+//               <Container>
+//                 <TableContainer component={Paper}>
+//                   <Table sx={{ minWidth: 700 }} aria-label="customized table">
+//                     <TableHead>
+//                       <TableRow>
+//                         <StyledTableCell>
+//                           <Typography
+//                             style={{ fontSize: "19px", color: "white", padding: '12px' }}
+//                           >
+//                             Class
+//                           </Typography>
+//                         </StyledTableCell>
+//                         <StyledTableCell align='right' >
+//                           <Typography
+//                             style={{ fontSize: "19px", color: "white", padding: '12px' }}
+//                           >
+//                             PURCHASE  TEST
+//                           </Typography>
+//                         </StyledTableCell>
+
+//                       </TableRow>
+//                     </TableHead>
+//                     <TableBody>
+//                       {Object.entries(dataPay && dataPay).map(([k, v]) => (
+//                         <StyledTableRow key={k}>
+//                           <StyledTableCell component="th" scope="row">
+//                             <Typography
+//                               style={{ fontSize: "17px", fontWeight: '700', color: "black", padding: '12px' }}
+//                             >
+//                               {v.split("<==>")[0]}<sup>th</sup>
+//                             </Typography>
+//                           </StyledTableCell>
+
+//                           <StyledTableCell align='right' style={{ cursor: 'pointer' }} onClick={() => classFuncPay(k, v.split("<==>")[1])} component="th" scope="row">
+//                             <Button variant="contained" color="success"><Typography
+//                               style={{ fontSize: "17px", color: "black", padding: '12px' }}
+//                             >
+//                               Continue Test
+//                             </Typography></Button>
+//                           </StyledTableCell>
+
+//                         </StyledTableRow>
+//                       ))}
+//                     </TableBody>
+//                   </Table>
+//                 </TableContainer>
+//               </Container>
+//             </>
+//           ) : changelayout == 2 ?
+//           <>
+//               <Container>
+//                 <TableContainer component={Paper}>
+//                   <Table sx={{ minWidth: 700 }} aria-label="customized table">
+//                     <TableHead>
+//                       <TableRow>
+//                         <StyledTableCell>
+//                           <Typography
+//                             style={{ fontSize: "19px", color: "white", padding: '12px' }}
+//                           >
+//                             Videos
+//                           </Typography>
+//                         </StyledTableCell>
+//                         <StyledTableCell align='right' >
+//                           <Typography
+//                             style={{ fontSize: "19px", color: "white", padding: '12px' }}
+//                           >
+//                             PURCHASE  Video
+//                           </Typography>
+//                         </StyledTableCell>
+
+//                       </TableRow>
+//                     </TableHead>
+//                     <TableBody>
+//                       {Object.entries(video && video).map(([k, v]) => (
+//                         <StyledTableRow key={k}>
+//                           <StyledTableCell component="th" scope="row">
+//                             <Typography
+//                               style={{ fontSize: "17px", fontWeight: '700', color: "black", padding: '12px' }}
+//                             >
+//                               {v.split("<==>")[0]}
+//                             </Typography>
+//                             <img style={{'width': '100px', 'height': '70px'}} src={`${process.env.REACT_APP_API_URL}/media/${v.split("<==>")[1]}`} alt="video" />
+//                           </StyledTableCell>
+
+//                           <StyledTableCell align='right' style={{ cursor: 'pointer' }}  component="th" scope="row">
+//                             <Link to={`/video-page/${k}`}><Button variant="contained" color="success"><Typography
+//                               style={{ fontSize: "17px", color: "black", padding: '12px' }}
+//                             >
+//                               watch
+//                             </Typography></Button></Link>
+//                           </StyledTableCell>
+
+//                         </StyledTableRow>
+//                       ))}
+//                     </TableBody>
+//                   </Table>
+//                 </TableContainer>
+//               </Container>
+//             </>
+//             :
+//             ""
+//           }
+//         </Box>
+//       </Box>
+
+
+
+
+
