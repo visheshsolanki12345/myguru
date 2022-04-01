@@ -204,7 +204,8 @@ const ResultPage6To9 = () => {
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col"><Typography variant='h5'>Area</Typography></th>
+                                    <th scope="col"><Typography variant='h5'>Id</Typography></th>
+                                     <th scope="col"><Typography variant='h5'>Area</Typography></th>
                                     <th scope="col"><Typography variant='h5'>Score</Typography></th>
                                     <th scope="col"><Typography variant='h5'>Maximum Score</Typography></th>
                                     <th scope="col"><Typography variant='h5'>Grade</Typography></th>
@@ -213,9 +214,10 @@ const ResultPage6To9 = () => {
                             <tbody>
                                 {data.map((e) =>
                                     <tr>
+                                        <td><Typography variant='h5'>{e.index}</Typography></td>
                                         <td><Typography variant='h5'>{e.section}</Typography></td>
-                                        <td><Typography variant='h5'>{e.totalCount}</Typography></td>
-                                        <td><Typography variant='h5'>{e.totalNoQu}</Typography></td>
+                                        <td><Typography variant='h5'>{Math.ceil(e.totalCount)}</Typography></td>
+                                        <td><Typography variant='h5'>{Math.ceil(e.totalNoQu)}</Typography></td>
                                         <td><Typography variant='h5'>{e.grade}</Typography></td>
                                     </tr>
                                 )}
@@ -390,7 +392,9 @@ export const ResultPage = ({ data, array, arrayy }) => {
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col"><Typography variant='h5'>Area</Typography></th>
+                            
+                                
+                                 <th scope="col"><Typography variant='h5'>Id</Typography></th>
                                 <th scope="col"><Typography variant='h5'>Score</Typography></th>
                                 <th scope="col"><Typography variant='h5'>Maximum Score</Typography></th>
                                 <th scope="col"><Typography variant='h5'>Grade</Typography></th>
@@ -399,7 +403,7 @@ export const ResultPage = ({ data, array, arrayy }) => {
                         <tbody>
                             {data.map((e) =>
                                 <tr>
-                                    <td><Typography variant='h5'>{e.section}</Typography></td>
+                                    <td><Typography variant='h5'>{e.index}</Typography></td>
                                     <td><Typography variant='h5'>{e.totalCount}</Typography></td>
                                     <td><Typography variant='h5'>{e.totalNoQu}</Typography></td>
                                     <td><Typography variant='h5'>{e.grade}</Typography></td>

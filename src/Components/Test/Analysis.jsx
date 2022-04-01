@@ -221,7 +221,7 @@ const Analysis = ({ data, carrerData }) => {
                                 Object.entries(r.interpretatio.the_json && r.interpretatio.the_json).map(([k, v]) =>
                                   r.grade === k ?
 
-                                    v.split("<==>").map((p) =>
+                                    v && v.split("<==>").map((p) =>
                                       <ListItem style={{ listStyleType: "circle" }}>
                                         <Typography variant='h5'>{p}</Typography>
                                       </ListItem>
@@ -264,7 +264,7 @@ const Analysis = ({ data, carrerData }) => {
                             <Typography variant='h4' > {i + 1}. {k.section} ({k.totalCount}-{k.grade})</Typography>
                           </ListItem>
                           <Typography variant='h5' style={{ marginLeft: '12px' }} align='left'>
-                            {filterSection(k.section)[0].description}
+                           {filterSection(k.section)[0] && filterSection(k.section)[0].description}
                           </Typography>
                           <Divider />
                         </>
