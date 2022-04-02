@@ -12,6 +12,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { getTest } from "../../../actions/Test/TestAction";
 import '../triangle.css'
 import axios from 'axios'
+import ScrollToTop from "../../ScrollToTop";
 
 const ImageQuiz1 = () => {
     const { test } = useSelector((state) => state.test)
@@ -279,10 +280,7 @@ const ImageQuiz1 = () => {
                 Authorization: `Bearer ${user && user.access}`,
             },
             body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-            });
-        });
+        })
     }
 
     const handleSect = (a, index) => {
@@ -413,11 +411,7 @@ const ImageQuiz1 = () => {
                 Authorization: `Bearer ${user && user.access}`,
             },
             body: JSON.stringify(item),
-        }).then((result) => {
-            result.json().then((resp) => {
-                getBackupData()
-            });
-        });
+        })
     };
 
 
@@ -461,6 +455,7 @@ const ImageQuiz1 = () => {
 
     return (
         <>
+            <ScrollToTop/>
             <Container className={classes.container}>
                 <Grid container>
                     <Grid item xs={6} sm={6} className={classes.grids1}>
@@ -509,7 +504,7 @@ const ImageQuiz1 = () => {
                                                                 dangerouslySetInnerHTML={{ __html: e.questionText }}
                                                             />
                                                             : ""
-                                                    }</div>  {e.question ? <img style={{ maxHeight: '100px', maxWidth: '100px' }} src={process.env.REACT_APP_API_URL + e.question}></img> : ""}</Typography></FormLabel>
+                                                    }</div>  {e.question ? <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.question}></img> : ""}</Typography></FormLabel>
 
                                             <RadioGroup
                                                 aria-label=""
@@ -531,7 +526,7 @@ const ImageQuiz1 = () => {
                                                     
                                                     
                                                     
-                                                    'maxHeight' : '100px', maxWidth: '100px' }} src={process.env.REACT_APP_API_URL + e.a}></img> : ""}</Typography>} />
+                                                    'maxHeight' : '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.a}></img> : ""}</Typography>} />
 
 
                                                 <FormControlLabel
@@ -546,7 +541,7 @@ const ImageQuiz1 = () => {
                                                     onChange={() => submit(e.section.section, e.question ? e.question : e.questionText, e.b ? e.b : e.bText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.b)
                                                     )}
 
-                                                    control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.bText ? e.bText : ""}</div>  {e.b ? <img style={{ maxHeight: '100px', maxWidth: '100px' }} src={process.env.REACT_APP_API_URL + e.b}></img> : ""}</Typography>} />
+                                                    control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.bText ? e.bText : ""}</div>  {e.b ? <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.b}></img> : ""}</Typography>} />
 
                                                 <FormControlLabel
                                                     checked={
@@ -559,7 +554,7 @@ const ImageQuiz1 = () => {
 
                                                     onChange={() =>
                                                         submit(e.section.section, e.question ? e.question : e.questionText, e.c ? e.c : e.cText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.c))}
-                                                    control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.cText ? e.cText : ""}</div> {e.c ? <img style={{ maxHeight: '100px', maxWidth: '100px' }} src={process.env.REACT_APP_API_URL + e.c}></img> : ""}</Typography>} />
+                                                    control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.cText ? e.cText : ""}</div> {e.c ? <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.c}></img> : ""}</Typography>} />
 
                                                 {e.d || e.dText ?
                                                     <FormControlLabel
@@ -573,7 +568,7 @@ const ImageQuiz1 = () => {
 
                                                         onChange={() =>
                                                             submit(e.section.section, e.question ? e.question : e.questionText, e.d ? e.d : e.dText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.d))}
-                                                        control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.dText ? e.dText : ""}</div>{e.d ? <img style={{ maxHeight: '100px', maxWidth: '100px' }} src={process.env.REACT_APP_API_URL + e.d}></img> : ""}</Typography>} /> : ''}
+                                                        control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.dText ? e.dText : ""}</div>{e.d ? <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.d}></img> : ""}</Typography>} /> : ''}
 
                                                 {e.e || e.eText ?
                                                     <FormControlLabel
@@ -587,7 +582,7 @@ const ImageQuiz1 = () => {
 
                                                         onChange={() =>
                                                             submit(e.section.section, e.question ? e.question : e.questionText, e.e ? e.e : e.eText, e.rightAns, findAbc(e.section.section) === false ? e.section.number : test.discreption && test.discreption.map((n) => n.selectNumber.e))}
-                                                        control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.eText ? e.eText : ""}</div>{e.e ? <img style={{ maxHeight: '100px', maxWidth: '100px' }} src={process.env.REACT_APP_API_URL + e.e}></img> : ""}</Typography>} /> : ''}
+                                                        control={<Radio />} label={<Typography variant='h5' className='d-flex row'> <div>{e.eText ? e.eText : ""}</div>{e.e ? <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.e}></img> : ""}</Typography>} /> : ''}
                                             </RadioGroup>
                                         </FormControl>
                                     </Container>

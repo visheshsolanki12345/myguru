@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loader from "../Loader/Loader";
 import { Button } from "@mui/material";
 import './triangle.css'
+import { Container } from "react-bootstrap";
 
 
 const Assessment = () => {
@@ -47,12 +48,13 @@ const Assessment = () => {
                                 </div>
                                 <div className="full mt-3">
                                     <h1 className="text-start mt-3 ml-4 fw-bold gray">General Instructions</h1>
+                                    <Container>
                                     <div className=" ">
                                         <h1 className="text-center mt-3 gray">Please read the instructions carefully</h1>
                                         <p style={{ textAlign: 'left', fontSize: '19px', fontWeight: '500', marginLeft: '20px' }}>Instructions for students:</p>
                                     </div>
                                     <div>
-                                        <ul style={{ textAlign: 'left', fontSize: '14px' }}  >
+                                        <ul style={{  fontSize: '14px' }}  >
                                             <div>
                                                 {
                                                     test.discreption && test.discreption.map((e) =>
@@ -68,6 +70,7 @@ const Assessment = () => {
                                     <div style={{ padding: '40px' }}>
                                         <Link to='/testpage'>   <Button >  <div className="button_slide slide_down">Proceed to Test </div></Button> </Link>
                                     </div>
+                                  </Container>
                                 </div>
                             </div>
                         </div>

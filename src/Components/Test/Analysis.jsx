@@ -249,6 +249,8 @@ const Analysis = ({ data, carrerData }) => {
 
       {
         typeOfTest === "Mulitpal Quiz Select Test" ?
+          <>
+            <h1>Final Assesment and Suggested Career Clusters</h1>
           <Grid container lg={12} style={{ border: '1px solid #96CCFE' }}>
             <List className='mt-2 mx-4'>
               <Typography className='d-flex row' align='left' style={{ fontSize: '15px' }}><b>Based on the data available from Career Cluster Assessment, three top Career Clusters are suggested as below:</b>
@@ -274,7 +276,8 @@ const Analysis = ({ data, carrerData }) => {
 
               }
             </List>
-          </Grid>
+            </Grid>
+            </>
           :
           ""
       }
