@@ -331,13 +331,7 @@ const ResultPage6To9 = () => {
                     <Container>
                         <Bpp datas={data && data} />
                     </Container>
-                    <Container >
-                        <Analysis data={data && data} carrerData={carrerData && carrerData}></Analysis>
-                    </Container>
-                </Container>
-            )}
-
-            {typeOfTest === "Mulitpal Quiz Select Test" ? (
+                     {typeOfTest === "Mulitpal Quiz Select Test" ? (
                 
                 <Container>
                     <Grid container style={{padding:"10px 0"}}>
@@ -349,6 +343,13 @@ const ResultPage6To9 = () => {
                         }
                 </Grid>
                 </Container>) : ""}
+                    <Container >
+                        <Analysis data={data && data} carrerData={carrerData && carrerData}></Analysis>
+                    </Container>
+                </Container>
+            )}
+
+           
 
 
             {
