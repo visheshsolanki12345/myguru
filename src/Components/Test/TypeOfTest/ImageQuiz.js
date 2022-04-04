@@ -504,7 +504,7 @@ const ImageQuiz1 = () => {
                                                                 dangerouslySetInnerHTML={{ __html: e.questionText }}
                                                             />
                                                             : ""
-                                                    }</div>  {e.question ? <img style={{ maxHeight: '100%', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.question}></img> : ""}</Typography></FormLabel>
+                                                    }</div>  {e.question ? <img style={{ maxHeight: '400px', maxWidth: '100%' }} src={process.env.REACT_APP_API_URL + e.question}></img> : ""}</Typography></FormLabel>
 
                                             <RadioGroup
                                                 aria-label=""
