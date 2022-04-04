@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -41,8 +41,17 @@ ChartJS.register(
 
 export function Bpp({ datas }) {
   const matches = useMediaQuery('(max-width:600px)');
+ 
+  let dataArray = []
+  let i=0;
+  useEffect = (()=>{
+  for(i=0;i<datas.length;i++){
+    dataArray.push(i)
+  }
+  },[])
+  
   // console.log(datas)
-  const labels = matches?[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]:datas.map((e) => e.interpretatio.section.section)
+  const labels = matches?dataArray:datas.map((e) => e.interpretatio.section.section)
   const values = datas.map((e) => e.totalCount)
   // console.log(datas)
   const data = {
