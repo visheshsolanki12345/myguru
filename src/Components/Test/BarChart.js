@@ -42,7 +42,7 @@ ChartJS.register(
 export function Bpp({ datas }) {
   const matches = useMediaQuery('(max-width:600px)');
   // console.log(datas)
-  const labels = matches?[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]:datas.map((e) => e.interpretatio.section.section)
+  const labels = matches?datas.length:datas.map((e) => e.interpretatio.section.section)
   const values = datas.map((e) => e.totalCount)
   // console.log(datas)
   const data = {
